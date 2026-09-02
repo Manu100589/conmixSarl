@@ -22,14 +22,11 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const projectTypes = [
-    'Portes Métalliques',
-    'Fenêtres & Baies',
-    'Escaliers Métalliques',
-    'Garde-corps',
-    'Portails & Clôtures',
-    'Structures Métalliques',
-    'Verrières',
-    'Ouvrage Sur-Mesure',
+    'Étude de Projet',
+    'Construction Métallique',
+    'Menuiserie Métallique',
+    'Génie Civil',
+    'Formation',
   ];
 
   const materials = [

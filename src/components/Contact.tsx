@@ -26,14 +26,11 @@ export const Contact: React.FC = () => {
   };
 
   const projectTypes = [
-    'Portes Métalliques',
-    'Fenêtres & Baies',
-    'Escaliers Métalliques',
-    'Garde-corps',
-    'Portails & Clôtures',
-    'Structures Métalliques',
-    'Verrières',
-    'Ouvrage Sur-Mesure',
+    'Étude de Projet',
+    'Construction Métallique',
+    'Menuiserie Métallique',
+    'Génie Civil',
+    'Formation',
   ];
 
   const budgetOptions = [

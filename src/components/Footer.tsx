@@ -57,12 +57,11 @@ export const Footer: React.FC = () => {
               Ouvrages & Expertise
             </h4>
             <ul className="space-y-2.5">
-              <li><a href="#services" className="hover:text-white transition-colors">Portes Métalliques</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Fenêtres & Baies</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Escaliers Suspendus</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Garde-Corps Design</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Portails Motorisés</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Verrières d'Atelier</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Étude de projet</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Construction métallique</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Menuiserie métallique</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Génie civil</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Formation professionnelle</a></li>
             </ul>
           </div>
 

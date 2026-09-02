@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, Layers } from 'lucide-react';
+import { ArrowUpRight, Layers, FileText, Building2, Wrench, HardHat, GraduationCap } from 'lucide-react';
 
 export interface ServiceItem {
   id: string;
@@ -9,6 +9,7 @@ export interface ServiceItem {
   image: string;
   tags: string[];
   features: string[];
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 interface ServicesProps {
@@ -18,75 +19,53 @@ interface ServicesProps {
 export const servicesData: ServiceItem[] = [
   {
     id: '01',
-    title: 'PORTES MÉTALLIQUES',
-    shortDesc: 'Conception et fabrication de portes métalliques robustes, blindées ou vitrées.',
-    fullDesc: 'Portes métalliques d\'entrée, d\'atelier ou techniques sur-mesure. Nous combinons sécurité anti-effraction élevée, isolation thermique/phonique performante et finitions esthétiques thermo-laquées.',
-    image: '/imagi/552602831_1099029555626496_8713052199757261741_n.jpg',
-    tags: ['Porte Blindée', 'Vitrage Sécurité', 'Serrure 5 Points'],
-    features: ['Acier haute résistance 3mm', 'Isolation laine de roche', 'Thermo-laquage RAL au choix', 'Certification A2P'],
+    title: 'ÉTUDE DE PROJET',
+    shortDesc: 'Analyse technique, métrés 3D BIM, notes de calculs d\'ingénierie et modélisation CAO.',
+    fullDesc: 'Conception complète de vos projets métalliques et de construction. Nous réalisons les études de faisabilité, relevés 3D sur site, notes de calculs selon les normes Eurocodes, modélisation BIM et plans d\'exécution détaillés pour garantir une parfaite faisabilité technique.',
+    image: '/imagi/548476386_1097101992485919_649683484737793793_n.jpg',
+    tags: ['BIM 3D', 'Note de Calculs', 'Relevé Laser'],
+    features: ['Modélisation CAO 3D haute précision', 'Validation des charges et calculs d\'ingénierie', 'Cahier des charges sur-mesure', 'Plans d\'exécution d\'atelier'],
+    icon: FileText,
   },
   {
     id: '02',
-    title: 'FENÊTRES & BAIES',
-    shortDesc: 'Solutions métalliques adaptées aux projets résidentiels et professionnels.',
-    fullDesc: 'Menuiseries métalliques fines à rupture de pont thermique. Baies vitrées coulissantes ou à galandage de grandes dimensions offrant un apport lumineux maximal avec un design ultra-fin.',
-    image: '/imagi/550484129_1099029425626509_8910105939628219548_n.jpg',
-    tags: ['Rupture Pont Thermique', 'Grande Hauteur', 'Design Extra-Fin'],
-    features: ['Profilés acier ou aluminium extra-fins', 'Double & Triple vitrage isolation renforcée', 'Joints d\'étanchéité EPDM', 'Conforme RE2020'],
+    title: 'CONSTRUCTION MÉTALLIQUE',
+    shortDesc: 'Fabrication et montage de charpentes acier, passerelles, ossatures et structures.',
+    fullDesc: 'Réalisation de structures métalliques complexes et charpentes industrielles ou architecturales. Fabrication dans nos ateliers équipés et assemblage sur site avec grutage et contrôles de sécurité rigoureux.',
+    image: '/imagi/557284613_1108182218044563_1799444793147620466_n.jpg',
+    tags: ['Charpente Acier', 'Passerelle', 'Structure BIM'],
+    features: ['Fabrication en atelier certifié', 'Soudure TIG/MIG & assemblages de précision', 'Montage et levage sécurisé sur site', 'Traçabilité des aciers S355'],
+    icon: Building2,
   },
   {
     id: '03',
-    title: 'ESCALIERS MÉTALLIQUES',
-    shortDesc: 'Escaliers modernes, industriels et suspendus réalisés sur mesure.',
-    fullDesc: 'Escaliers hélicoïdaux, droits, quart-tournants ou suspendus. Alliage harmonieux de l\'acier avec le verre, le bois noble (chêne, noyer) ou la pierre pour un rendu architectural unique.',
-    image: '/imagi/552317415_1099029342293184_4066768090408243718_n.jpg',
-    tags: ['Hélicoïdal', 'Suspendu', 'Limon Central'],
-    features: ['Étude de charge & calculs de structure BIM', 'Marches bois, verre ou tôle larmée', 'Assemblage sans soudures apparentes', 'Conception modulaire'],
+    title: 'MENUISERIE MÉTALLIQUE',
+    shortDesc: 'Portes, verrières, escaliers d\'art, garde-corps, baies et portails motorisés sur-mesure.',
+    fullDesc: 'Ouvrages d\'art en acier, inox et aluminium pour particuliers, professionnels et édifices de standing. Fabrication de verrières d\'atelier, portes blindées, escaliers suspendus, garde-corps et clôtures sur-mesure.',
+    image: '/imagi/550317449_1099029452293173_6664467472333154406_n.jpg',
+    tags: ['Verrières', 'Escaliers d\'Art', 'Portes & Baies'],
+    features: ['Finition thermo-laquée époxy cuite au four', 'Rupture de pont thermique & isolation', 'Combinaison acier, verre feuilleté & bois', 'Norme de sécurité NF P01-012'],
+    icon: Wrench,
   },
   {
     id: '04',
-    title: 'GARDE-CORPS',
-    shortDesc: 'Garde-corps métalliques pour balcons, escaliers, terrasses et mezzanines.',
-    fullDesc: 'Systèmes de protection sur-mesure répondant strictement à la norme NF P01-012. Remplissage barreaudage vertical, câbles inox, tôle perforée à motif laser ou panneaux de verre feuilleté.',
-    image: '/imagi/552793296_1099850212211097_1588584581253692481_n.jpg',
-    tags: ['Norme NF P01-012', 'Inox & Verre', 'Découpe Laser'],
-    features: ['Fixation à la française ou en anglaise', 'Main courante Inox 316 / Acier', 'Traitement anti-corrosion milieu marin', 'Test d\'impact certifié'],
+    title: 'GÉNIE CIVIL',
+    shortDesc: 'Travaux de fondations, dallages industriels, gros œuvre et ouvrages d\'art béton/acier.',
+    fullDesc: 'Prise en charge intégrale des travaux de génie civil et d\'infrastructure. Fondations spéciales, dalles en béton armé, ancrages d\'ouvrages métalliques, superstructures et maçonnerie industrielle.',
+    image: '/imagi/555050054_1101447318718053_2981192187399908246_n.jpg',
+    tags: ['Fondations', 'Béton Armé', 'Gros Œuvre'],
+    features: ['Étude de sol & calculs de structure béton', 'Coulage de dalles hautes charges', 'Interface parfaite Métal & Béton armé', 'Conformité aux normes DTU'],
+    icon: HardHat,
   },
   {
     id: '05',
-    title: 'PORTAILS & CLÔTURES',
-    shortDesc: 'Portails et clôtures personnalisés combinant sécurité, motorisation et esthétique.',
-    fullDesc: 'Portails battants ou coulissants autoportants avec motorisation intégrée. Motifs géométriques exclusifs découpés au laser pour habiller les façades contemporaines.',
-    image: '/imagi/557272334_1108182341377884_7278977532498212781_n.jpg',
-    tags: ['Motorisé', 'Autoportant', 'Motif Sur-Mesure'],
-    features: ['Découpe laser personnalisée', 'Compatibilité domotique & visiophonie', 'Structure renforcée anti-vent', 'Traitement galvanisé à chaud'],
-  },
-  {
-    id: '06',
-    title: 'STRUCTURES MÉTALLIQUES',
-    shortDesc: 'Fabrication de structures métalliques adaptées aux projets architecturaux complexes.',
-    fullDesc: 'Charpentes métalliques légères, extensions ossature acier, passerelles suspendues, mezzanines industrielles et pergolas bioclimatiques avec modélisation 3D avancée.',
-    image: '/imagi/557284613_1108182218044563_1799444793147620466_n.jpg',
-    tags: ['Charpente Acier', 'Extension Loft', 'Passerelle'],
-    features: ['Note de calculs d\'ingénierie Eurocodes', 'Assemblages boulonnés / soudés', 'Grutage et manutention spéciale', 'Traçabilité des aciers S355'],
-  },
-  {
-    id: '07',
-    title: 'VERRIÈRES',
-    shortDesc: 'Verrières métalliques contemporaines pour intérieurs et espaces professionnels.',
-    fullDesc: 'Cloisons vitrées style atelier d\'artiste avec portes coulissantes ou battantes intégrées. Séparez vos espaces tout en conservant la fluidité visuelle et la lumière naturelle.',
-    image: '/imagi/557759899_1111852721010846_8317688947392489645_n.jpg',
-    tags: ['Style Atelier', 'Porte Coulissante', 'Isolation Acoustique'],
-    features: ['Profilés T et cornières acier d\'antan ou modernes', 'Vitrage feuilleté de sécurité 33.2 / 44.2', 'Finition patinée, brute ou thermo-laquée', 'Pose étanche sans poussière'],
-  },
-  {
-    id: '08',
-    title: 'OUVRAGES SUR MESURE',
-    shortDesc: 'Conception de solutions métalliques uniques selon les dimensions et besoins du client.',
-    fullDesc: 'Créations métalliques hors norme : mobilier d\'architecte, devantures de magasins luxe, habillages de cheminée, claustras décoratifs et œuvres métalliques sur-mesure.',
-    image: '/imagi/557712097_1111852334344218_4945281494256388505_n.jpg',
-    tags: ['Sur-Mesure Pur', 'Mobilier & Façade', 'Chaudronnerie D\'Art'],
-    features: ['Étude 3D & prototype préalable', 'Combinaison laiton, cuivre, acier Corten', 'Finitions brossées, brutes ou dorées', 'Pièces uniques numérotées'],
+    title: 'FORMATION',
+    shortDesc: 'Formation professionnelle aux métiers de la métallerie, soudure TIG/MIG et sécurité.',
+    fullDesc: 'Transmission de l\'expertise CONMIX SARL à travers des programmes de formation certifiants. Perfectionnement en soudure haute précision, chaudronnerie, lecture de plans d\'ingénierie et règles de sécurité sur chantier.',
+    image: '/imagi/557723202_1108182391377879_8168269075197127529_n.jpg',
+    tags: ['Soudure TIG/MIG', 'Chaudronnerie', 'Sécurité Chantier'],
+    features: ['Ateliers pratiques avec équipements pro', 'Pratique de la soudure sur aciers & inox', 'Lecture de plans CAO & métrologie', 'Attestation de compétence certifiée'],
+    icon: GraduationCap,
   },
 ];
 
@@ -101,72 +80,81 @@ export const Services: React.FC<ServicesProps> = ({ onSelectService }) => {
           <div>
             <div className="flex items-center space-x-2 text-xs font-space text-[#C82333] uppercase tracking-widest mb-3 font-semibold">
               <Layers className="w-4 h-4" />
-              <span>02 / EXPERTISE TECHNIQUE</span>
+              <span>02 / EXPERTISE DE L'ENTREPRISE</span>
             </div>
             <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
-              NOTRE SAVOIR-FAIRE
+              NOS SERVICES
             </h2>
           </div>
           <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
-            Des ouvrages métalliques conçus, façonnés et posés avec rigueur pour les projets les plus ambitieux.
+            Une offre de services 360° couvrant l'ingénierie, la construction métallique, la menuiserie d'art, le génie civil et la formation professionnelle.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {servicesData.map((service) => (
-            <div
-              key={service.id}
-              onClick={() => onSelectService(service)}
-              className="interactive group relative bg-[#0B0D0F] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer"
-            >
-              <div className="relative h-48 w-full overflow-hidden bg-[#1A1D20]">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/40 to-transparent" />
+        {/* 5 Core Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {servicesData.map((service) => {
+            const IconComp = service.icon;
+            return (
+              <div
+                key={service.id}
+                onClick={() => onSelectService(service)}
+                className="interactive group relative bg-[#0B0D0F] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer"
+              >
+                <div className="relative h-56 w-full overflow-hidden bg-[#1A1D20]">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/40 to-transparent" />
 
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-md bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[#C82333] font-space font-bold text-xs tracking-wider">
-                  {service.id}
+                  <div className="absolute top-4 left-4 px-3 py-1 rounded-md bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[#C82333] font-space font-bold text-xs tracking-wider flex items-center space-x-2">
+                    <span>{service.id}</span>
+                  </div>
+
+                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#A71D2A] group-hover:rotate-45 transition-all duration-300 shadow-md">
+                    <ArrowUpRight className="w-5 h-5" />
+                  </div>
+
+                  {/* Icon Badge Overlay */}
+                  <div className="absolute bottom-4 left-4 p-3 rounded-xl bg-[#0B0D0F]/90 backdrop-blur-md border border-white/15 text-[#C82333]">
+                    <IconComp className="w-6 h-6" />
+                  </div>
                 </div>
 
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#A71D2A] group-hover:rotate-45 transition-all duration-300 shadow-md">
-                  <ArrowUpRight className="w-4 h-4" />
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div>
+                    <h3 className="font-syne font-bold text-xl text-white group-hover:text-[#C82333] transition-colors flex items-center justify-between">
+                      <span>{service.title}</span>
+                    </h3>
+
+                    <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 my-2" />
+
+                    <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit leading-relaxed">
+                      {service.shortDesc}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {service.tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded bg-[#1A1D20] text-[10px] font-space text-[#9CA3AF] border border-white/5"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-space font-semibold text-[#C82333] group-hover:text-white transition-colors">
+                    <span>Découvrir l'expertise complète</span>
+                    <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
                 </div>
               </div>
-
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="font-syne font-bold text-lg sm:text-xl text-white group-hover:text-[#C82333] transition-colors flex items-center justify-between">
-                    <span>{service.title}</span>
-                  </h3>
-
-                  <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 my-2" />
-
-                  <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit line-clamp-3 leading-relaxed">
-                    {service.shortDesc}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {service.tags.slice(0, 2).map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-0.5 rounded bg-[#1A1D20] text-[10px] font-space text-[#9CA3AF] border border-white/5"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-space font-semibold text-[#C82333] group-hover:text-white transition-colors">
-                  <span>En savoir plus</span>
-                  <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
