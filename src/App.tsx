@@ -8,6 +8,7 @@ import { Introduction } from './components/Introduction';
 import { Services } from './components/Services';
 import type { ServiceItem } from './components/Services';
 import { Showcase } from './components/Showcase';
+import { RealizedProjects } from './components/RealizedProjects';
 import { ParallaxSection } from './components/ParallaxSection';
 import { Process } from './components/Process';
 import { KeyMetrics } from './components/KeyMetrics';
@@ -65,7 +66,10 @@ export const App: React.FC = () => {
         {/* 3. Nos Services / Notre Savoir-faire */}
         <Services onSelectService={(service) => setSelectedService(service)} />
 
-        {/* 4. Showcase Section */}
+        {/* 4. Nos Projets Réalisés (Usines p1, p2, p3) */}
+        <RealizedProjects />
+
+        {/* 5. Showcase Section */}
         <Showcase />
 
         {/* 5. Parallax Section */}
