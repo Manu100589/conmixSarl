@@ -67,15 +67,15 @@ export const Footer: React.FC = () => {
 
           <div className="space-y-3 font-space text-xs">
             <h4 className="font-syne font-bold text-sm text-white uppercase tracking-wider mb-4">
-              Qualité & Atelier
+              Siège & Contact
             </h4>
             <p className="text-xs text-[#9CA3AF] leading-relaxed">
-              Z.I. Métallurgie Sud, Bâtiment B4<br />
-              Atelier de Découpe Laser & Soudures TIG/MIG
+              Babenga, Région du Littoral, Cameroun<br />
+              Atelier de Fabrication & Construction Mixte
             </p>
-            <div className="pt-2 space-y-1 text-[11px] text-[#6B7075]">
-              <p>SIRET : 849 204 102 00019</p>
-              <p>Code APE : 2511Z (Fabrication de structures métalliques)</p>
+            <div className="pt-2 space-y-1 text-xs text-white/90 font-medium">
+              <p>📞 <a href="tel:+237679285276" className="hover:text-[#C82333] transition-colors">+237 6 79 28 52 76</a></p>
+              <p>✉️ <a href="mailto:contact@conmix-sarl.cm" className="hover:text-[#C82333] transition-colors">contact@conmix-sarl.cm</a></p>
             </div>
           </div>
         </div>

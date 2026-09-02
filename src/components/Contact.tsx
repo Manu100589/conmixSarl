@@ -7,7 +7,7 @@ export const Contact: React.FC = () => {
     entreprise: '',
     telephone: '',
     email: '',
-    typeProjet: 'Escaliers Métalliques',
+    typeProjet: 'Construction Métallique',
     budget: '15 000€ - 50 000€',
     message: '',
     fileAttached: false,
@@ -65,12 +65,12 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-5 space-y-8">
             <div className="p-8 rounded-2xl bg-[#0B0D0F] border border-white/10 space-y-8">
               <h3 className="font-syne font-bold text-2xl text-white">
-                Coordonnées Atelier
+                Coordonnées & Localisation
               </h3>
 
               <div className="space-y-6">
                 <a
-                  href="tel:+33189204050"
+                  href="tel:+237679285276"
                   className="group flex items-start space-x-4 p-4 rounded-xl bg-[#1A1D20]/60 border border-white/5 hover:border-[#A71D2A]/50 transition-colors"
                 >
                   <div className="p-3 rounded-lg bg-[#A71D2A]/10 text-[#C82333] group-hover:bg-[#A71D2A] group-hover:text-white transition-colors">
@@ -79,13 +79,13 @@ export const Contact: React.FC = () => {
                   <div>
                     <span className="text-[11px] font-space text-[#9CA3AF] uppercase tracking-wider block">Téléphone Ligne Directe</span>
                     <span className="font-space font-bold text-base text-white group-hover:text-[#C82333] transition-colors">
-                      +33 1 89 20 40 50
+                      +237 6 79 28 52 76
                     </span>
                   </div>
                 </a>
 
                 <a
-                  href="https://wa.me/33189204050"
+                  href="https://wa.me/237679285276"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-start space-x-4 p-4 rounded-xl bg-[#1A1D20]/60 border border-white/5 hover:border-[#25D366]/50 transition-colors"
@@ -96,13 +96,13 @@ export const Contact: React.FC = () => {
                   <div>
                     <span className="text-[11px] font-space text-[#9CA3AF] uppercase tracking-wider block">Échange Instantané WhatsApp</span>
                     <span className="font-space font-bold text-base text-white group-hover:text-[#25D366] transition-colors">
-                      Discuter sur WhatsApp →
+                      Discuter sur WhatsApp (+237 6 79 28 52 76) →
                     </span>
                   </div>
                 </a>
 
                 <a
-                  href="mailto:contact@conmix-metallerie.fr"
+                  href="mailto:contact@conmix-sarl.cm"
                   className="group flex items-start space-x-4 p-4 rounded-xl bg-[#1A1D20]/60 border border-white/5 hover:border-[#A71D2A]/50 transition-colors"
                 >
                   <div className="p-3 rounded-lg bg-[#A71D2A]/10 text-[#C82333] group-hover:bg-[#A71D2A] group-hover:text-white transition-colors">
@@ -111,7 +111,7 @@ export const Contact: React.FC = () => {
                   <div>
                     <span className="text-[11px] font-space text-[#9CA3AF] uppercase tracking-wider block">E-mail Équipe Technique</span>
                     <span className="font-space font-bold text-base text-white group-hover:text-[#C82333] transition-colors">
-                      contact@conmix-metallerie.fr
+                      contact@conmix-sarl.cm
                     </span>
                   </div>
                 </a>
@@ -121,19 +121,39 @@ export const Contact: React.FC = () => {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[11px] font-space text-[#9CA3AF] uppercase tracking-wider block">Atelier de Fabrication & Siège</span>
+                    <span className="text-[11px] font-space text-[#9CA3AF] uppercase tracking-wider block">Siège Social & Atelier</span>
                     <span className="font-space text-sm text-white font-medium block">
-                      Z.I. Métallurgie Sud — Bâtiment B4
+                      Babenga, Région du Littoral, Cameroun
                     </span>
-                    <span className="text-xs text-[#9CA3AF]">75011 Paris / Lyon / Douala</span>
+                    <span className="text-xs text-[#9CA3AF]">Proximité Littoral & Axes Industriels</span>
                   </div>
+                </div>
+              </div>
+
+              {/* Google Maps Interactive Card */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between text-xs font-space">
+                  <span className="text-white font-semibold flex items-center space-x-2">
+                    <MapPin className="w-4 h-4 text-[#C82333]" />
+                    <span>CARTE GOOGLE MAPS — BABENGA</span>
+                  </span>
+                  <span className="text-[#C82333] text-[10px] font-bold uppercase tracking-wider">Cameroun</span>
+                </div>
+                <div className="relative w-full h-56 rounded-xl overflow-hidden border border-white/15 shadow-xl">
+                  <iframe
+                    title="Localisation Google Maps CONMIX SARL Babenga Cameroun"
+                    src="https://maps.google.com/maps?q=Babenga%2C%20R%C3%A9gion%20du%20Littoral%2C%20Cameroun&t=&z=12&ie=UTF8&iwloc=&output=embed"
+                    className="w-full h-full border-0 filter contrast-125 brightness-90"
+                    loading="lazy"
+                    allowFullScreen
+                  />
                 </div>
               </div>
 
               <div className="p-4 rounded-xl bg-[#A71D2A]/10 border border-[#A71D2A]/30 text-xs font-space text-white space-y-1">
                 <span className="text-[#C82333] font-bold">⏰ Horaires d'ouverture de l'atelier :</span>
-                <p className="text-[#9CA3AF]">Lundi – Vendredi : 07h30 – 19h00</p>
-                <p className="text-[#9CA3AF]">Samedi sur rendez-vous</p>
+                <p className="text-[#9CA3AF]">Lundi – Vendredi : 07h30 – 18h00</p>
+                <p className="text-[#9CA3AF]">Samedi : 08h00 – 14h00</p>
               </div>
             </div>
           </div>
@@ -149,7 +169,7 @@ export const Contact: React.FC = () => {
                     DEMANDE TRANSMISE AVEC SUCCÈS !
                   </h3>
                   <p className="text-sm font-outfit text-[#9CA3AF] max-w-md mx-auto leading-relaxed">
-                    Merci <strong className="text-white">{formData.nom}</strong>. Nos ingénieurs métalleux ont bien reçu votre dossier pour le projet <strong className="text-[#C82333]">{formData.typeProjet}</strong>. Nous vous recontacterons sous 24 à 48 heures.
+                    Merci <strong className="text-white">{formData.nom}</strong>. Nos ingénieurs métalleux ont bien reçu votre dossier pour le projet <strong className="text-[#C82333]">{formData.typeProjet}</strong>. Nous vous recontacterons au <strong className="text-white">+237 6 79 28 52 76</strong> sous 24 à 48 heures.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
@@ -181,7 +201,7 @@ export const Contact: React.FC = () => {
                       </label>
                       <input
                         type="text"
-                        placeholder="Cabinet d'Architectes XYZ (Optionnel)"
+                        placeholder="Société ou Cabinet XYZ (Optionnel)"
                         value={formData.entreprise}
                         onChange={(e) => setFormData({ ...formData, entreprise: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
@@ -197,7 +217,7 @@ export const Contact: React.FC = () => {
                       <input
                         type="tel"
                         required
-                        placeholder="+33 6 12 34 56 78"
+                        placeholder="+237 6 79 28 52 76"
                         value={formData.telephone}
                         onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
@@ -211,7 +231,7 @@ export const Contact: React.FC = () => {
                       <input
                         type="email"
                         required
-                        placeholder="jean.dupont@exemple.fr"
+                        placeholder="contact@exemple.cm"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
@@ -221,9 +241,9 @@ export const Contact: React.FC = () => {
 
                   <div className="space-y-2">
                     <label className="text-xs font-space font-semibold uppercase text-white/90">
-                      Type de projet *
+                      Type de service réquis *
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {projectTypes.map((type) => (
                         <button
                           key={type}
@@ -270,7 +290,7 @@ export const Contact: React.FC = () => {
                     <textarea
                       required
                       rows={4}
-                      placeholder="Précisez les dimensions estimées, le lieu du chantier, vos contraintes d'installation..."
+                      placeholder="Précisez les dimensions estimées, le lieu du chantier (ex: Littoral, Douala...), vos contraintes d'installation..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
