@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight, X, Layers, Image as ImageIcon } from 'lucide-react';
 
 export interface RealizedProject {
@@ -108,6 +108,8 @@ export const realizedProjectsData: RealizedProject[] = [
 export const RealizedProjects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<RealizedProject | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const openGallery = (project: RealizedProject) => {
     setSelectedProject(project);
@@ -124,17 +126,34 @@ export const RealizedProjects: React.FC = () => {
     setActiveImageIndex((prev) => (prev - 1 + selectedProject.allImages.length) % selectedProject.allImages.length);
   };
 
+  const handleScroll = () => {
+    if (!sliderRef.current) return;
+    const scrollLeft = sliderRef.current.scrollLeft;
+    const width = sliderRef.current.clientWidth;
+    if (width > 0) {
+      const index = Math.round(scrollLeft / width);
+      setActiveSlide(index);
+    }
+  };
+
+  const scrollToSlide = (index: number) => {
+    if (!sliderRef.current) return;
+    const width = sliderRef.current.clientWidth;
+    sliderRef.current.scrollTo({ left: width * index, behavior: 'smooth' });
+    setActiveSlide(index);
+  };
+
   return (
     <section id="projets-realises" className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
       <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-[#A71D2A]/10 blur-[180px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
             <div className="flex items-center space-x-2 text-xs font-space text-[#C82333] uppercase tracking-widest mb-3 font-semibold">
               <Sparkles className="w-4 h-4 text-[#C82333]" />
-              <span>03 / GRANDES CHANTIERS NATIONAUX</span>
+              <span>03 / CHANTIERS INDUSTRIELS</span>
             </div>
             <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
               NOS PROJETS RÉALISÉS
@@ -145,14 +164,18 @@ export const RealizedProjects: React.FC = () => {
           </p>
         </div>
 
-        {/* Projects Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Projects Cards Container - Grid on Desktop, Horizontal Snap Slider on Mobile */}
+        <div
+          ref={sliderRef}
+          onScroll={handleScroll}
+          className="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-6 pb-6 pt-2"
+        >
           {realizedProjectsData.map((project) => (
             <div
               key={project.id}
-              className="interactive group bg-[#1A1D20]/70 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30"
+              className="w-[88vw] sm:w-[70vw] lg:w-auto shrink-0 snap-center lg:shrink interactive group bg-[#1A1D20]/70 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30"
             >
-              <div className="relative h-72 w-full overflow-hidden bg-black">
+              <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
                 <img
                   src={project.coverImage}
                   alt={project.title}
@@ -160,7 +183,7 @@ export const RealizedProjects: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A1D20] via-[#1A1D20]/30 to-transparent" />
 
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[11px] font-space font-bold text-[#C82333] tracking-widest uppercase">
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[10px] sm:text-[11px] font-space font-bold text-[#C82333] tracking-widest uppercase">
                   {project.badge}
                 </div>
 
@@ -170,13 +193,13 @@ export const RealizedProjects: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
+              <div className="p-5 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
                   <span className="text-xs font-space text-[#9CA3AF] uppercase tracking-wider block">
                     {project.category}
                   </span>
 
-                  <h3 className="font-syne font-bold text-xl sm:text-2xl text-white group-hover:text-[#C82333] transition-colors leading-tight">
+                  <h3 className="font-syne font-bold text-lg sm:text-2xl text-white group-hover:text-[#C82333] transition-colors leading-tight">
                     {project.title}
                   </h3>
 
@@ -207,6 +230,46 @@ export const RealizedProjects: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Horizontal Slider Controls & Indicators */}
+        <div className="flex lg:hidden flex-col items-center space-y-3 pt-2">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => scrollToSlide(Math.max(0, activeSlide - 1))}
+              disabled={activeSlide === 0}
+              className="p-2.5 rounded-full bg-[#1A1D20] border border-white/15 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#A71D2A] transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center space-x-2">
+              {realizedProjectsData.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToSlide(idx)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    activeSlide === idx
+                      ? 'w-8 bg-[#C82333] shadow-md shadow-[#C82333]/50'
+                      : 'w-2.5 bg-white/20 hover:bg-white/40'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => scrollToSlide(Math.min(realizedProjectsData.length - 1, activeSlide + 1))}
+              disabled={activeSlide === realizedProjectsData.length - 1}
+              className="p-2.5 rounded-full bg-[#1A1D20] border border-white/15 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#A71D2A] transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          <span className="text-[11px] font-space text-[#9CA3AF]">
+            👈 Glissez pour explorer les 3 chantiers d'exception 👉
+          </span>
         </div>
       </div>
 
