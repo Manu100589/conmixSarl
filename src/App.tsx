@@ -19,6 +19,7 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { QuoteModal } from './components/QuoteModal';
 import { ServiceModal } from './components/ServiceModal';
+import { Chatbot } from './components/Chatbot';
 
 export const App: React.FC = () => {
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
@@ -104,6 +105,9 @@ export const App: React.FC = () => {
         onClose={() => setSelectedService(null)}
         onOpenQuoteModal={() => setQuoteModalOpen(true)}
       />
+
+      {/* Automated Smart Chatbot */}
+      <Chatbot onOpenQuoteModal={() => setQuoteModalOpen(true)} />
     </div>
   );
 };
