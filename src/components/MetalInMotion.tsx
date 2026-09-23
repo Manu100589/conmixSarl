@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Layers, Flame, Compass, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import { KineticTracking } from './motion/MotionSignatures';
 
 export const MetalInMotion: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -58,9 +59,9 @@ export const MetalInMotion: React.FC = () => {
               <Sparkles className="w-4 h-4" />
               <span>Concept Exclusif CONMIX</span>
             </div>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
+            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight uppercase">
               LE MÉTAL EN MOUVEMENT
-            </h2>
+            </KineticTracking>
           </div>
           <p className="text-sm sm:text-base text-[#9CA3AF] font-outfit max-w-md">
             Découvrez la métamorphose de la matière brute en un ouvrage métallique sur-mesure d'exception.

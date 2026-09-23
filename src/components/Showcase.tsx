@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Maximize2, Sparkles, Filter, X } from 'lucide-react';
+import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
 
 interface Project {
   id: string;
@@ -118,12 +119,12 @@ export const Showcase: React.FC = () => {
               <Sparkles className="w-4 h-4" />
               <span>03 / GALERIE PROJETS CONMIX</span>
             </div>
-            <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
+            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.02] uppercase">
               DES OUVRAGES QUI <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#C82333] to-[#F87171]">
                 PARLENT POUR NOUS.
               </span>
-            </h2>
+            </KineticTracking>
           </div>
 
           <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
@@ -153,11 +154,11 @@ export const Showcase: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="interactive group relative bg-[#1A1D20]/60 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A]/70 hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer"
-            >
+            <Subtle3DAxis key={project.id} maxTilt={6}>
+              <div
+                onClick={() => setSelectedProject(project)}
+                className="interactive group relative bg-[#1A1D20]/60 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A]/70 hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer h-full"
+              >
               <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
                 <img
                   src={project.image}
@@ -200,6 +201,7 @@ export const Showcase: React.FC = () => {
                 </div>
               </div>
             </div>
+            </Subtle3DAxis>
           ))}
         </div>
       </div>

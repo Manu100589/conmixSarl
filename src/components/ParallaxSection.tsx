@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LineParallax } from './motion/MotionSignatures';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -68,13 +69,16 @@ export const ParallaxSection: React.FC = () => {
           <span>ADN CONMIX SARL</span>
         </div>
 
-        <h2 className="font-syne font-extrabold text-4xl sm:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-[0.95] drop-shadow-2xl">
-          <span className="block text-white/90">DU MÉTAL.</span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171]">
-            DE LA PRÉCISION.
-          </span>
-          <span className="block text-white/90">DU CARACTÈRE.</span>
-        </h2>
+        <LineParallax
+          lines={['DU MÉTAL.', 'DE LA PRÉCISION.', 'DU CARACTÈRE.']}
+          speeds={[1.0, 0.85, 1.15]}
+          className="font-syne font-black text-4xl sm:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-[0.95] drop-shadow-2xl"
+          lineClassName={(idx) =>
+            idx === 1
+              ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171] drop-shadow-[0_0_35px_rgba(200,35,51,0.5)]'
+              : 'text-white/95'
+          }
+        />
 
         <p className="max-w-2xl mx-auto text-base sm:text-xl text-[#9CA3AF] font-outfit font-light leading-relaxed pt-4">
           Une maîtrise totale du métal guidée par des décennies d'exigence technique, d'audace architecturale et d'innovation industrielle.

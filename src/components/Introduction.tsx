@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ShieldCheck, Ruler, Award, CheckCircle } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { KineticTracking, WordDisplacement, Subtle3DAxis } from './motion/MotionSignatures';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,12 +70,12 @@ export const Introduction: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <div ref={textRef} className="lg:col-span-7 space-y-8">
-            <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.05]">
+            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.02] uppercase">
               LA PRÉCISION DANS <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F4F4F0] to-[#C82333]">
                 CHAQUE DÉTAIL.
               </span>
-            </h2>
+            </KineticTracking>
 
             <div className="h-1 w-24 bg-gradient-to-r from-[#A71D2A] to-transparent rounded-full" />
 
@@ -82,28 +83,39 @@ export const Introduction: React.FC = () => {
               Chez <strong className="text-white font-semibold">CONMIX SARL</strong>, nous transformons le métal en solutions durables, fonctionnelles et esthétiques. Chaque ouvrage est pensé selon les exigences du projet, fabriqué avec précision et installé avec rigueur.
             </p>
 
-            <p className="text-sm sm:text-base text-white/80 font-outfit leading-relaxed border-l-2 border-[#A71D2A] pl-4 py-1 italic">
-              « Qu'il s'agisse d'une verrière d'atelier haut de gamme, d'un escalier suspendu ou d'une structure métallique industrielle complexe, nos réalisations incarnent la rencontre entre l'ingénierie et l'art de la chaudronnerie d'art. »
-            </p>
+            <div className="border-l-2 border-[#A71D2A] pl-4 py-2 bg-[#1A1D20]/30 rounded-r-xl">
+              <WordDisplacement
+                text="Qu'il s'agisse d'une verrière d'atelier haut de gamme, d'un escalier suspendu ou d'une structure métallique industrielle complexe, nos réalisations incarnent la rencontre entre l'ingénierie et l'art de la chaudronnerie d'art."
+                className="text-sm sm:text-base text-white/90 font-outfit leading-relaxed italic"
+                highlightWords={['verrière', 'escalier', 'structure', 'ingénierie', 'chaudronnerie']}
+                highlightClass="text-[#C82333] font-semibold not-italic"
+              />
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="p-4 rounded-xl bg-[#1A1D20]/60 border border-white/10 hover:border-[#A71D2A]/50 transition-colors">
-                <Ruler className="w-6 h-6 text-[#C82333] mb-2" />
-                <h4 className="font-syne font-bold text-sm text-white">Précision Milimétrique</h4>
-                <p className="text-xs text-[#9CA3AF] font-space mt-1">Conception CAO 3D & Découpe laser au 1/10e mm.</p>
-              </div>
+              <Subtle3DAxis maxTilt={8}>
+                <div className="p-4 rounded-xl bg-[#1A1D20]/75 border border-white/10 hover:border-[#A71D2A]/50 transition-colors h-full">
+                  <Ruler className="w-6 h-6 text-[#C82333] mb-2" />
+                  <h4 className="font-syne font-bold text-sm text-white">Précision Millimétrique</h4>
+                  <p className="text-xs text-[#9CA3AF] font-space mt-1">Conception CAO 3D & Découpe laser au 1/10e mm.</p>
+                </div>
+              </Subtle3DAxis>
 
-              <div className="p-4 rounded-xl bg-[#1A1D20]/60 border border-white/10 hover:border-[#A71D2A]/50 transition-colors">
-                <ShieldCheck className="w-6 h-6 text-[#C82333] mb-2" />
-                <h4 className="font-syne font-bold text-sm text-white">Traitements Nobles</h4>
-                <p className="text-xs text-[#9CA3AF] font-space mt-1">Thermo-laquage, galvanisation & acier Corten.</p>
-              </div>
+              <Subtle3DAxis maxTilt={8}>
+                <div className="p-4 rounded-xl bg-[#1A1D20]/75 border border-white/10 hover:border-[#A71D2A]/50 transition-colors h-full">
+                  <ShieldCheck className="w-6 h-6 text-[#C82333] mb-2" />
+                  <h4 className="font-syne font-bold text-sm text-white">Traitements Nobles</h4>
+                  <p className="text-xs text-[#9CA3AF] font-space mt-1">Thermo-laquage, galvanisation & acier Corten.</p>
+                </div>
+              </Subtle3DAxis>
 
-              <div className="p-4 rounded-xl bg-[#1A1D20]/60 border border-white/10 hover:border-[#A71D2A]/50 transition-colors">
-                <Award className="w-6 h-6 text-[#C82333] mb-2" />
-                <h4 className="font-syne font-bold text-sm text-white">Pose Clé en Main</h4>
-                <p className="text-xs text-[#9CA3AF] font-space mt-1">Équipes de pose qualifiées avec garantie décennale.</p>
-              </div>
+              <Subtle3DAxis maxTilt={8}>
+                <div className="p-4 rounded-xl bg-[#1A1D20]/75 border border-white/10 hover:border-[#A71D2A]/50 transition-colors h-full">
+                  <Award className="w-6 h-6 text-[#C82333] mb-2" />
+                  <h4 className="font-syne font-bold text-sm text-white">Pose Clé en Main</h4>
+                  <p className="text-xs text-[#9CA3AF] font-space mt-1">Équipes de pose qualifiées avec garantie décennale.</p>
+                </div>
+              </Subtle3DAxis>
             </div>
 
             <div className="flex items-center space-x-4 pt-2">

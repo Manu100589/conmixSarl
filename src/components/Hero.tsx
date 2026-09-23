@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowDown, Sparkles, ShieldCheck, Hammer, Layers } from 'lucide-react';
-import gsap from 'gsap';
+import { SplitMaskReveal, MaskLine, MagneticButton } from './motion/MotionSignatures';
+import { Metal3DStructure } from './Metal3DStructure';
 
 interface HeroProps {
   onOpenQuoteModal: () => void;
@@ -9,7 +10,6 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const titleWordsRef = useRef<HTMLSpanElement[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -99,38 +99,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (titleWordsRef.current.length > 0) {
-      gsap.fromTo(
-        titleWordsRef.current,
-        { opacity: 0, y: 40, filter: 'blur(8px)' },
-        {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 1,
-          stagger: 0.15,
-          ease: 'power3.out',
-          delay: 0.2,
-        }
-      );
-    }
-  }, []);
-
-  const addToTitleRef = (el: HTMLSpanElement | null) => {
-    if (el && !titleWordsRef.current.includes(el)) {
-      titleWordsRef.current.push(el);
-    }
-  };
-
-  const titleWords = [
-    { text: 'NOUS', highlight: false },
-    { text: 'DONNONS', highlight: false },
-    { text: 'FORME', highlight: false },
-    { text: 'AU', highlight: false },
-    { text: 'MÉTAL.', highlight: true },
-  ];
-
   return (
     <section
       id="hero"
@@ -150,8 +118,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 pointer-events-none z-10 opacity-80"
+        className="absolute inset-0 pointer-events-none z-10 opacity-70"
       />
+
+      {/* 3D WebGL persistante et contrainte strictement sur la moitié droite (Règle d'or de cadrage 3D & Mobile) */}
+      <Metal3DStructure />
 
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-between min-h-[calc(100vh-160px)]">
         <div className="pt-6 sm:pt-10 flex items-center space-x-3">
@@ -162,24 +133,21 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           <span className="hidden sm:inline-block h-[1px] w-16 bg-gradient-to-r from-[#A71D2A]/60 to-transparent" />
         </div>
 
-        <div className="my-auto py-12 max-w-4xl">
-          <h1 className="font-syne font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-white">
-            {titleWords.map((word, idx) => (
-              <span
-                key={idx}
-                ref={addToTitleRef}
-                className={`inline-block mr-3 sm:mr-5 ${
-                  word.highlight
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171] drop-shadow-[0_0_35px_rgba(200,35,51,0.5)]'
-                    : ''
-                }`}
-              >
-                {word.text}
-              </span>
-            ))}
-          </h1>
+        {/* Zone éditoriale à gauche (max-w-[52%]) évitant tout chevauchement 3D */}
+        <div className="my-auto py-12 max-w-2xl lg:max-w-[52%]">
+          <SplitMaskReveal delay={0.15} stagger={0.12}>
+            <h1 className="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-[5.4rem] uppercase tracking-tighter leading-[0.92] text-white">
+              <MaskLine>NOUS DONNONS</MaskLine>
+              <MaskLine>
+                <span>FORME AU </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171] drop-shadow-[0_0_35px_rgba(200,35,51,0.5)]">
+                  MÉTAL.
+                </span>
+              </MaskLine>
+            </h1>
+          </SplitMaskReveal>
 
-          <p className="mt-8 text-base sm:text-xl lg:text-2xl text-[#9CA3AF] font-outfit font-light max-w-2xl leading-relaxed">
+          <p className="mt-8 text-base sm:text-xl lg:text-2xl text-[#9CA3AF] font-outfit font-light leading-relaxed">
             Menuiserie métallique sur mesure.{' '}
             <strong className="text-white font-medium">Conception. Fabrication. Installation.</strong>
             <br />
@@ -187,28 +155,31 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-5">
-            <button
-              onClick={onOpenQuoteModal}
-              className="interactive group relative overflow-hidden px-8 py-4 rounded-xl bg-gradient-to-r from-[#A71D2A] via-[#C82333] to-[#8B0000] text-white font-space font-bold text-sm tracking-wider uppercase shadow-2xl shadow-[#A71D2A]/40 hover:shadow-[#A71D2A]/70 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <span className="relative z-10 flex items-center justify-center space-x-3">
-                <span>Demander un devis</span>
-                <Hammer className="w-4 h-4 transition-transform group-hover:rotate-12" />
-              </span>
-              <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-            </button>
+            <MagneticButton onClick={onOpenQuoteModal}>
+              <button
+                className="interactive group relative overflow-hidden px-8 py-4 rounded-xl bg-gradient-to-r from-[#A71D2A] via-[#C82333] to-[#8B0000] text-white font-space font-bold text-sm tracking-wider uppercase shadow-2xl shadow-[#A71D2A]/40 hover:shadow-[#A71D2A]/70 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
+              >
+                <span className="relative z-10 flex items-center justify-center space-x-3">
+                  <span>Demander un devis</span>
+                  <Hammer className="w-4 h-4 transition-transform group-hover:rotate-12" />
+                </span>
+                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+              </button>
+            </MagneticButton>
 
-            <a
-              href="#showcase"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#showcase')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="interactive group flex items-center justify-center space-x-2 px-8 py-4 rounded-xl bg-[#1A1D20]/80 border border-white/15 hover:border-[#C82333]/60 text-white font-space text-sm font-semibold tracking-wider uppercase backdrop-blur-md transition-all duration-300 hover:bg-[#1A1D20]"
-            >
-              <span>Découvrir nos réalisations</span>
-              <Layers className="w-4 h-4 text-[#C82333] group-hover:scale-110 transition-transform" />
-            </a>
+            <MagneticButton>
+              <a
+                href="#showcase"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#showcase')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="interactive group flex items-center justify-center space-x-2 px-8 py-4 rounded-xl bg-[#1A1D20]/80 border border-white/15 hover:border-[#C82333]/60 text-white font-space text-sm font-semibold tracking-wider uppercase backdrop-blur-md transition-all duration-300 hover:bg-[#1A1D20] w-full sm:w-auto"
+              >
+                <span>Découvrir nos réalisations</span>
+                <Layers className="w-4 h-4 text-[#C82333] group-hover:scale-110 transition-transform" />
+              </a>
+            </MagneticButton>
           </div>
         </div>
 

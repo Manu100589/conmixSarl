@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUp, ShieldCheck, Award } from 'lucide-react';
+import { KineticTracking } from './motion/MotionSignatures';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -9,6 +10,17 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#0B0D0F] text-[#9CA3AF] border-t border-white/10 pt-16 pb-12 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Grand Titre d'Appel Haute Couture KineticTracking */}
+        <div className="pb-12 border-b border-white/10 mb-12">
+          <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white tracking-tight uppercase leading-[0.92]">
+            <span>BÂTISSONS </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171]">
+              L'AVENIR
+            </span>
+            <span> ENSEMBLE.</span>
+          </KineticTracking>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           <div className="lg:col-span-2 space-y-4">
             <a href="#hero" className="flex items-center space-x-3 text-white">

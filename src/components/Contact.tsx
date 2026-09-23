@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, PhoneCall, Mail, MapPin, MessageSquare, Paperclip, CheckCircle, Sparkles } from 'lucide-react';
+import { KineticTracking } from './motion/MotionSignatures';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -52,9 +53,9 @@ export const Contact: React.FC = () => {
               <Sparkles className="w-4 h-4" />
               <span>06 / CONTACT & DEVIS</span>
             </div>
-            <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
+            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight uppercase">
               PARLONS DE VOTRE PROJET.
-            </h2>
+            </KineticTracking>
           </div>
           <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
             Remplissez notre formulaire détaillé ci-dessous pour recevoir une étude personnalisée et un chiffrage précis sous 24-48h.

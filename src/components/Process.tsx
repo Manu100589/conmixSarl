@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { MessageSquare, Compass, Factory, CheckCircle2, Wrench, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,9 +88,9 @@ export const Process: React.FC = () => {
             <span>04 / NOTRE MÉTHODOLOGIE</span>
           </div>
 
-          <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
+          <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight uppercase">
             DE L'IDÉE À LA RÉALISATION.
-          </h2>
+          </KineticTracking>
 
           <p className="mt-4 text-base sm:text-lg text-[#9CA3AF] font-outfit font-light">
             Un processus structuré en 5 étapes clés garantissant maîtrise des délais, respect du budget et excellence d'exécution.
@@ -117,28 +118,30 @@ export const Process: React.FC = () => {
                   } gap-6 md:gap-12 relative group`}
                 >
                   <div className="w-full md:w-1/2 pl-16 md:pl-0">
-                    <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0D0F] border border-white/10 group-hover:border-[#A71D2A]/70 group-hover:shadow-2xl group-hover:shadow-[#A71D2A]/20 transition-all duration-500 relative">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-space font-extrabold text-2xl text-[#C82333]">
-                          {step.number}
-                        </span>
-                        <span className="text-[11px] font-space text-white/60 bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
-                          {step.detail}
-                        </span>
+                    <Subtle3DAxis maxTilt={5}>
+                      <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0D0F] border border-white/10 group-hover:border-[#A71D2A]/70 group-hover:shadow-2xl group-hover:shadow-[#A71D2A]/20 transition-all duration-500 relative">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="font-space font-extrabold text-2xl text-[#C82333]">
+                            {step.number}
+                          </span>
+                          <span className="text-[11px] font-space text-white/60 bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                            {step.detail}
+                          </span>
+                        </div>
+
+                        <h3 className="font-syne font-bold text-xl text-white group-hover:text-[#C82333] transition-colors mb-1">
+                          {step.title}
+                        </h3>
+
+                        <h4 className="text-xs font-space text-[#C82333] mb-3 font-medium">
+                          {step.subtitle}
+                        </h4>
+
+                        <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit leading-relaxed">
+                          {step.desc}
+                        </p>
                       </div>
-
-                      <h3 className="font-syne font-bold text-xl text-white group-hover:text-[#C82333] transition-colors mb-1">
-                        {step.title}
-                      </h3>
-
-                      <h4 className="text-xs font-space text-[#C82333] mb-3 font-medium">
-                        {step.subtitle}
-                      </h4>
-
-                      <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit leading-relaxed">
-                        {step.desc}
-                      </p>
-                    </div>
+                    </Subtle3DAxis>
                   </div>
 
                   <div className="absolute left-6 md:left-1/2 top-6 -translate-x-1/2 w-12 h-12 rounded-full bg-[#0B0D0F] border-2 border-[#A71D2A] flex items-center justify-center text-[#C82333] group-hover:scale-125 group-hover:bg-[#A71D2A] group-hover:text-white transition-all duration-300 shadow-lg shadow-[#A71D2A]/40 z-20">

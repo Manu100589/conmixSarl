@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { SlidersHorizontal, Sparkles } from 'lucide-react';
+import { KineticTracking } from './motion/MotionSignatures';
 
 export const BeforeAfter: React.FC = () => {
   const [sliderPos, setSliderPos] = useState(50);
@@ -56,9 +57,9 @@ export const BeforeAfter: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span>05 / MÉTAMORPHOSE ARCHITECTURALE</span>
           </div>
-          <h2 className="font-syne font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+          <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl text-white tracking-tight uppercase">
             TRANSFORMATION & RÉNOVATION
-          </h2>
+          </KineticTracking>
           <p className="mt-3 text-base text-[#9CA3AF] font-outfit">
             Glissez la poignée centrale pour comparer l'état d'origine du chantier avec la création d'exception CONMIX SARL.
           </p>

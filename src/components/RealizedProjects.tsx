@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight, X, Layers, Image as ImageIcon } from 'lucide-react';
+import { SplitMaskReveal, MaskLine, Subtle3DAxis } from './motion/MotionSignatures';
 
 export interface RealizedProject {
   id: string;
@@ -155,9 +156,12 @@ export const RealizedProjects: React.FC = () => {
               <Sparkles className="w-4 h-4 text-[#C82333]" />
               <span>03 / CHANTIERS INDUSTRIELS</span>
             </div>
-            <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
-              NOS PROJETS RÉALISÉS
-            </h2>
+            <SplitMaskReveal>
+              <h2 className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight uppercase">
+                <MaskLine>NOS PROJETS</MaskLine>
+                <MaskLine className="text-[#C82333]">RÉALISÉS</MaskLine>
+              </h2>
+            </SplitMaskReveal>
           </div>
           <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
             Découvrez nos réalisations phares en construction métallique d'usines complexes, pose de bardage, fermes et mezzanines industrielles.
@@ -173,61 +177,67 @@ export const RealizedProjects: React.FC = () => {
           {realizedProjectsData.map((project) => (
             <div
               key={project.id}
-              className="w-[88vw] sm:w-[70vw] lg:w-auto shrink-0 snap-center lg:shrink interactive group bg-[#1A1D20]/70 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30"
+              className="w-[88vw] sm:w-[70vw] lg:w-auto shrink-0 snap-center lg:shrink flex"
             >
-              <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
-                <img
-                  src={project.coverImage}
-                  alt={project.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1D20] via-[#1A1D20]/30 to-transparent" />
+              <Subtle3DAxis maxTilt={6} className="h-full">
+                <div
+                  className="interactive group bg-[#1A1D20]/75 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 h-full"
+                >
+                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
+                    <img
+                      src={project.coverImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1A1D20] via-[#1A1D20]/30 to-transparent" />
 
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[10px] sm:text-[11px] font-space font-bold text-[#C82333] tracking-widest uppercase">
-                  {project.badge}
-                </div>
-
-                <div className="absolute bottom-4 right-4 flex items-center space-x-1 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-space text-white border border-white/15">
-                  <ImageIcon className="w-3.5 h-3.5 text-[#C82333]" />
-                  <span>{project.allImages.length} Photos</span>
-                </div>
-              </div>
-
-              <div className="p-5 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
-                <div className="space-y-4">
-                  <span className="text-xs font-space text-[#9CA3AF] uppercase tracking-wider block">
-                    {project.category}
-                  </span>
-
-                  <h3 className="font-syne font-bold text-lg sm:text-2xl text-white group-hover:text-[#C82333] transition-colors leading-tight">
-                    {project.title}
-                  </h3>
-
-                  <div className="p-4 rounded-xl bg-[#0B0D0F]/80 border border-white/10 space-y-3">
-                    <div className="flex items-center space-x-2 text-xs font-space font-semibold text-[#C82333] uppercase tracking-wider">
-                      <Layers className="w-4 h-4" />
-                      <span>ACTIVITÉS RÉALISÉES</span>
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[10px] sm:text-[11px] font-space font-bold text-[#C82333] tracking-widest uppercase">
+                      {project.badge}
                     </div>
 
-                    <ul className="space-y-2 text-xs font-outfit text-[#9CA3AF]">
-                      {project.activities.map((act, idx) => (
-                        <li key={idx} className="flex items-start space-x-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#C82333] shrink-0 mt-0.5" />
-                          <span className="text-white/90">{act}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="absolute bottom-4 right-4 flex items-center space-x-1 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-space text-white border border-white/15">
+                      <ImageIcon className="w-3.5 h-3.5 text-[#C82333]" />
+                      <span>{project.allImages.length} Photos</span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-4">
+                      <span className="text-xs font-space text-[#9CA3AF] uppercase tracking-wider block">
+                        {project.category}
+                      </span>
+
+                      <h3 className="font-syne font-bold text-lg sm:text-2xl text-white group-hover:text-[#C82333] transition-colors leading-tight">
+                        {project.title}
+                      </h3>
+
+                      <div className="p-4 rounded-xl bg-[#0B0D0F]/80 border border-white/10 space-y-3">
+                        <div className="flex items-center space-x-2 text-xs font-space font-semibold text-[#C82333] uppercase tracking-wider">
+                          <Layers className="w-4 h-4" />
+                          <span>ACTIVITÉS RÉALISÉES</span>
+                        </div>
+
+                        <ul className="space-y-2 text-xs font-outfit text-[#9CA3AF]">
+                          {project.activities.map((act, idx) => (
+                            <li key={idx} className="flex items-start space-x-2">
+                              <CheckCircle2 className="w-4 h-4 text-[#C82333] shrink-0 mt-0.5" />
+                              <span className="text-white/90">{act}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => openGallery(project)}
+                      className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#A71D2A] to-[#8B0000] text-white font-space font-bold text-xs uppercase tracking-wider hover:from-[#C82333] hover:to-[#A71D2A] transition-all shadow-lg shadow-[#A71D2A]/30 flex items-center justify-center space-x-2 group/btn"
+                    >
+                      <span>Consulter la Galerie Photos ({project.allImages.length})</span>
+                      <ChevronRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                    </button>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => openGallery(project)}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#A71D2A] to-[#8B0000] text-white font-space font-bold text-xs uppercase tracking-wider hover:from-[#C82333] hover:to-[#A71D2A] transition-all shadow-lg shadow-[#A71D2A]/30 flex items-center justify-center space-x-2 group/btn"
-                >
-                  <span>Consulter la Galerie Photos ({project.allImages.length})</span>
-                  <ChevronRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                </button>
-              </div>
+              </Subtle3DAxis>
             </div>
           ))}
         </div>

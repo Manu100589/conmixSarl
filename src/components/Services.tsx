@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, Layers, FileText, Building2, Wrench, HardHat, GraduationCap } from 'lucide-react';
+import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
 
 export interface ServiceItem {
   id: string;
@@ -82,9 +83,9 @@ export const Services: React.FC<ServicesProps> = ({ onSelectService }) => {
               <Layers className="w-4 h-4" />
               <span>02 / EXPERTISE DE L'ENTREPRISE</span>
             </div>
-            <h2 className="font-syne font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight">
+            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight uppercase">
               NOS SERVICES
-            </h2>
+            </KineticTracking>
           </div>
           <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
             Une offre de services 360° couvrant l'ingénierie, la construction métallique, la menuiserie d'art, le génie civil et la formation professionnelle.
@@ -96,63 +97,64 @@ export const Services: React.FC<ServicesProps> = ({ onSelectService }) => {
           {servicesData.map((service) => {
             const IconComp = service.icon;
             return (
-              <div
-                key={service.id}
-                onClick={() => onSelectService(service)}
-                className="interactive group relative bg-[#0B0D0F] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer"
-              >
-                <div className="relative h-56 w-full overflow-hidden bg-[#1A1D20]">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/40 to-transparent" />
+              <Subtle3DAxis key={service.id} maxTilt={7}>
+                <div
+                  onClick={() => onSelectService(service)}
+                  className="interactive group relative bg-[#0B0D0F] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer h-full"
+                >
+                  <div className="relative h-56 w-full overflow-hidden bg-[#1A1D20]">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/40 to-transparent" />
 
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-md bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[#C82333] font-space font-bold text-xs tracking-wider flex items-center space-x-2">
-                    <span>{service.id}</span>
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-md bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[#C82333] font-space font-bold text-xs tracking-wider flex items-center space-x-2">
+                      <span>{service.id}</span>
+                    </div>
+
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#A71D2A] group-hover:rotate-45 transition-all duration-300 shadow-md">
+                      <ArrowUpRight className="w-5 h-5" />
+                    </div>
+
+                    {/* Icon Badge Overlay */}
+                    <div className="absolute bottom-4 left-4 p-3 rounded-xl bg-[#0B0D0F]/90 backdrop-blur-md border border-white/15 text-[#C82333]">
+                      <IconComp className="w-6 h-6" />
+                    </div>
                   </div>
 
-                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#A71D2A] group-hover:rotate-45 transition-all duration-300 shadow-md">
-                    <ArrowUpRight className="w-5 h-5" />
-                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                      <h3 className="font-syne font-bold text-xl text-white group-hover:text-[#C82333] transition-colors flex items-center justify-between">
+                        <span>{service.title}</span>
+                      </h3>
 
-                  {/* Icon Badge Overlay */}
-                  <div className="absolute bottom-4 left-4 p-3 rounded-xl bg-[#0B0D0F]/90 backdrop-blur-md border border-white/15 text-[#C82333]">
-                    <IconComp className="w-6 h-6" />
+                      <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 my-2" />
+
+                      <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit leading-relaxed">
+                        {service.shortDesc}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {service.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded bg-[#1A1D20] text-[10px] font-space text-[#9CA3AF] border border-white/5"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-space font-semibold text-[#C82333] group-hover:text-white transition-colors">
+                      <span>Découvrir l'expertise complète</span>
+                      <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+                    </div>
                   </div>
                 </div>
-
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <h3 className="font-syne font-bold text-xl text-white group-hover:text-[#C82333] transition-colors flex items-center justify-between">
-                      <span>{service.title}</span>
-                    </h3>
-
-                    <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 my-2" />
-
-                    <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit leading-relaxed">
-                      {service.shortDesc}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {service.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded bg-[#1A1D20] text-[10px] font-space text-[#9CA3AF] border border-white/5"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-space font-semibold text-[#C82333] group-hover:text-white transition-colors">
-                    <span>Découvrir l'expertise complète</span>
-                    <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </div>
-              </div>
+              </Subtle3DAxis>
             );
           })}
         </div>
