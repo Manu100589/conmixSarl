@@ -1,11 +1,16 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { SlidersHorizontal, Sparkles } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { KineticTracking } from './motion/MotionSignatures';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const BeforeAfter: React.FC = () => {
   const [sliderPos, setSliderPos] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
   const handleMove = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -19,6 +24,36 @@ export const BeforeAfter: React.FC = () => {
 
   const onMouseDown = () => setIsDragging(true);
   const onMouseUp = () => setIsDragging(false);
+
+  // Automatic subtle wipe hint on entrance
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        once: true,
+        onEnter: () => {
+          const posObj = { val: 50 };
+          gsap.to(posObj, {
+            val: 32,
+            duration: 0.9,
+            ease: 'power2.out',
+            onUpdate: () => setSliderPos(posObj.val),
+            onComplete: () => {
+              gsap.to(posObj, {
+                val: 50,
+                duration: 1.1,
+                ease: 'power2.inOut',
+                onUpdate: () => setSliderPos(posObj.val),
+              });
+            },
+          });
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
@@ -48,7 +83,10 @@ export const BeforeAfter: React.FC = () => {
   }, [isDragging, handleMove]);
 
   return (
-    <section className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white border-b border-white/10 overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white border-b border-white/10 overflow-hidden"
+    >
       <div className="absolute top-1/3 left-1/3 w-[500px] h-[300px] bg-[#A71D2A]/10 blur-[150px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -99,11 +137,13 @@ export const BeforeAfter: React.FC = () => {
             </div>
           </div>
 
+          {/* Glowing Red Neon Separator Line */}
           <div
-            className="absolute top-0 bottom-0 w-[3px] bg-[#C82333] shadow-[0_0_15px_rgba(200,35,51,0.9)] z-20 pointer-events-none"
+            className="absolute top-0 bottom-0 w-[3px] bg-[#C82333] shadow-[0_0_20px_rgba(200,35,51,1)] z-20 pointer-events-none"
             style={{ left: `${sliderPos}%` }}
           >
-            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#A71D2A] text-white border-2 border-white shadow-2xl flex items-center justify-center pointer-events-auto transform group-hover:scale-110 transition-transform">
+            {/* Center Handle Knob */}
+            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#A71D2A] text-white border-2 border-white shadow-[0_0_25px_rgba(200,35,51,0.8)] flex items-center justify-center pointer-events-auto transform group-hover:scale-110 active:scale-95 transition-transform">
               <SlidersHorizontal className="w-5 h-5 rotate-90" />
             </div>
           </div>

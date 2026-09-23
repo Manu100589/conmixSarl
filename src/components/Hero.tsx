@@ -1,16 +1,149 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowDown, Sparkles, ShieldCheck, Hammer, Layers } from 'lucide-react';
-import { SplitMaskReveal, MaskLine, MagneticButton } from './motion/MotionSignatures';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MagneticButton } from './motion/MotionSignatures';
 import { Metal3DStructure } from './Metal3DStructure';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface HeroProps {
   onOpenQuoteModal: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const heroContentRef = useRef<HTMLDivElement | null>(null);
+  const bgImageRef = useRef<HTMLDivElement | null>(null);
+  const techGridRef = useRef<HTMLDivElement | null>(null);
+  const titleLineRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const curtainRef = useRef<HTMLDivElement | null>(null);
+  const laserLineRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // 1. Initial Load Intro: Dark Screen + Red Horizontal Laser Line Expansion
+  useEffect(() => {
+    const curtain = curtainRef.current;
+    const laser = laserLineRef.current;
+    const lines = titleLineRefs.current.filter(Boolean);
+
+    const tl = gsap.timeline();
+
+    if (curtain && laser) {
+      tl.set(laser, { scaleX: 0, opacity: 0 })
+        .to(laser, {
+          opacity: 1,
+          scaleX: 0.12,
+          duration: 0.4,
+          ease: 'power2.out',
+        })
+        .to(laser, {
+          scaleX: 1,
+          duration: 0.7,
+          ease: 'expo.inOut',
+          boxShadow: '0 0 30px #C82333, 0 0 60px #C82333',
+        })
+        .to(curtain, {
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.inOut',
+          pointerEvents: 'none',
+        }, '+=0.1');
+    }
+
+    // Hero title line by line entrance
+    if (lines.length > 0) {
+      tl.fromTo(
+        lines,
+        {
+          y: 80,
+          opacity: 0,
+          clipPath: 'inset(100% 0 0 0)',
+        },
+        {
+          y: 0,
+          opacity: 1,
+          clipPath: 'inset(0% 0 0 0)',
+          duration: 1.1,
+          stagger: 0.09,
+          ease: 'power3.out',
+        },
+        '-=0.5'
+      );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
+  // 2. Parallax at multiple depths & Zoom -> Blur Overlap Transition on Scroll
+  useEffect(() => {
+    const section = containerRef.current;
+    const content = heroContentRef.current;
+    const bg = bgImageRef.current;
+    const grid = techGridRef.current;
+    if (!section || !content) return;
+
+    const ctx = gsap.context(() => {
+      // Multi-depth parallax
+      if (bg) {
+        gsap.to(bg, {
+          yPercent: 18,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+
+      if (grid) {
+        gsap.to(grid, {
+          yPercent: 32,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+
+      // Hero Zoom (1 -> 1.08) then fade/blur overlap transition
+      const heroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.2,
+        },
+      });
+
+      heroTl
+        .to(content, {
+          scale: 1.08,
+          y: 30,
+          ease: 'power1.out',
+          duration: 0.35,
+        })
+        .to(content, {
+          scale: 0.94,
+          opacity: 0,
+          filter: 'blur(8px)',
+          y: 80,
+          ease: 'power2.in',
+          duration: 0.65,
+        });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  // 3. Ambient Welding Sparks Particle Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -49,9 +182,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
       particles.push({
         x: originX,
         y: originY,
-        vx: (Math.random() - 0.5) * 6,
-        vy: -Math.random() * 5 - 2,
-        size: Math.random() * 2.5 + 1,
+        vx: (Math.random() - 0.5) * 5,
+        vy: -Math.random() * 4.5 - 2,
+        size: Math.random() * 2.2 + 1,
         alpha: 1,
         decay: Math.random() * 0.02 + 0.01,
         color: colors[Math.floor(Math.random() * colors.length)],
@@ -61,7 +194,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      if (Math.random() < 0.6) {
+      if (Math.random() < 0.55) {
         createParticle();
       }
 
@@ -81,7 +214,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
         ctx.globalAlpha = p.alpha;
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -99,32 +232,67 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
     };
   }, []);
 
+  const titleLines = [
+    { text: 'NOUS', isSpecial: false },
+    { text: 'DONNONS', isSpecial: false },
+    { text: 'FORME AU', isSpecial: false },
+    { text: 'MÉTAL.', isSpecial: true },
+  ];
+
   return (
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#0B0D0F]"
+      className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#07080A]"
     >
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Cinematic Intro Screen: Dark Screen + Red Laser Line */}
+      <div
+        ref={curtainRef}
+        aria-hidden="true"
+        className="fixed inset-0 z-50 bg-[#07080A] flex items-center justify-center pointer-events-none transition-opacity"
+      >
+        <div
+          ref={laserLineRef}
+          className="w-full h-[2px] bg-gradient-to-r from-transparent via-[#C82333] to-transparent origin-center shadow-[0_0_20px_#C82333]"
+        />
+      </div>
+
+      {/* Layer 1: Background Workshop Photo with Subtle Parallax */}
+      <div ref={bgImageRef} className="absolute inset-0 z-0 overflow-hidden will-change-transform">
         <img
           src="/imagi/557723202_1108182391377879_8168269075197127529_n.jpg"
           alt="CONMIX SARL Real Atelier Fabrication"
-          className="w-full h-full object-cover object-center scale-105 opacity-45 filter brightness-75 contrast-125 transition-transform duration-1000"
+          className="w-full h-full object-cover object-center scale-105 opacity-40 filter brightness-70 contrast-125"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/70 to-[#0B0D0F]/40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0D0F]/90 via-transparent to-[#0B0D0F]/60" />
-        <div className="absolute inset-0 bg-metal-grid opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0D0F]/95 via-[#0B0D0F]/60 to-transparent" />
       </div>
 
+      {/* Layer 2: Abstract Technical Network (Blueprint lines, coordinates, laser nodes) */}
+      <div
+        ref={techGridRef}
+        className="absolute inset-0 z-[1] bg-blueprint-lines opacity-40 pointer-events-none will-change-transform"
+      >
+        <div className="absolute top-20 right-1/4 w-80 h-80 bg-[#C82333]/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-10 left-12 text-[10px] font-space text-white/20 tracking-[0.25em] select-none hidden sm:block">
+          CAD/BIM EUROCODE 3 • LAT 04°05'N LONG 09°42'E
+        </div>
+      </div>
+
+      {/* Ambient Welding Sparks Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none z-10 opacity-70"
       />
 
-      {/* 3D WebGL persistante et contrainte strictement sur la moitié droite (Règle d'or de cadrage 3D & Mobile) */}
+      {/* 3D WebGL persistante et contrainte strictement sur la moitié droite (w-[46%]) */}
       <Metal3DStructure />
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-between min-h-[calc(100vh-160px)]">
+      {/* Layer 3: Foreground Content with Zoom and Overlap Transition */}
+      <div
+        ref={heroContentRef}
+        className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-between min-h-[calc(100vh-160px)] will-change-transform"
+      >
         <div className="pt-6 sm:pt-10 flex items-center space-x-3">
           <span className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#1A1D20]/90 border border-[#A71D2A]/40 text-[#C82333] text-xs font-space font-semibold uppercase tracking-widest backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 animate-pulse text-[#C82333]" />
@@ -135,17 +303,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
 
         {/* Zone éditoriale à gauche (max-w-[52%]) évitant tout chevauchement 3D */}
         <div className="my-auto py-12 max-w-2xl lg:max-w-[52%]">
-          <SplitMaskReveal delay={0.15} stagger={0.12}>
-            <h1 className="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-[5.4rem] uppercase tracking-tighter leading-[0.92] text-white">
-              <MaskLine>NOUS DONNONS</MaskLine>
-              <MaskLine>
-                <span>FORME AU </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F4F4F0] via-[#C82333] to-[#F87171] drop-shadow-[0_0_35px_rgba(200,35,51,0.5)]">
-                  MÉTAL.
+          <h1 className="font-syne font-black text-4xl sm:text-6xl md:text-7xl lg:text-[5.4rem] uppercase tracking-tighter leading-[0.92] text-white">
+            {titleLines.map((line, idx) => (
+              <span key={idx} className="block overflow-hidden py-1">
+                <span
+                  ref={(el) => {
+                    titleLineRefs.current[idx] = el;
+                  }}
+                  className={`inline-block ${
+                    line.isSpecial ? 'text-metal-sweep drop-shadow-[0_0_40px_rgba(200,35,51,0.6)]' : ''
+                  }`}
+                >
+                  {line.text}
                 </span>
-              </MaskLine>
-            </h1>
-          </SplitMaskReveal>
+              </span>
+            ))}
+          </h1>
 
           <p className="mt-8 text-base sm:text-xl lg:text-2xl text-[#9CA3AF] font-outfit font-light leading-relaxed">
             Menuiserie métallique sur mesure.{' '}
@@ -200,10 +373,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           </div>
 
           <a
-            href="#introduction"
+            href="#metal-motion"
             onClick={(e) => {
               e.preventDefault();
-              document.querySelector('#introduction')?.scrollIntoView({ behavior: 'smooth' });
+              document.querySelector('#metal-motion')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="group flex items-center space-x-3 text-xs font-space font-semibold uppercase tracking-widest text-[#9CA3AF] hover:text-[#C82333] transition-colors"
           >

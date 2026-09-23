@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const Process: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const lineRef = useRef<HTMLDivElement | null>(null);
+  const laserHeadRef = useRef<HTMLDivElement | null>(null);
 
   const steps = [
     {
@@ -55,7 +56,8 @@ export const Process: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (lineRef.current) {
+      // 1. Central Line & Laser Head Growth with scrub
+      if (lineRef.current && laserHeadRef.current) {
         gsap.fromTo(
           lineRef.current,
           { scaleY: 0 },
@@ -64,12 +66,71 @@ export const Process: React.FC = () => {
             ease: 'none',
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 60%',
-              end: 'bottom 80%',
+              start: 'top 65%',
+              end: 'bottom 85%',
               scrub: true,
             },
           }
         );
+
+        gsap.fromTo(
+          laserHeadRef.current,
+          { top: '0%' },
+          {
+            top: '100%',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 65%',
+              end: 'bottom 85%',
+              scrub: true,
+            },
+          }
+        );
+      }
+
+      // 2. Individual Step Reveals
+      const stepItems = sectionRef.current?.querySelectorAll('.process-step-item');
+      if (stepItems) {
+        stepItems.forEach((item) => {
+          const card = item.querySelector('.process-card');
+          const circle = item.querySelector('.process-circle');
+          const connector = item.querySelector('.process-connector');
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 75%',
+              toggleActions: 'play none none none',
+            },
+          });
+
+          if (circle) {
+            tl.fromTo(
+              circle,
+              { scale: 0.7, opacity: 0.4 },
+              { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.7)' }
+            );
+          }
+
+          if (connector) {
+            tl.fromTo(
+              connector,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.3, ease: 'power2.out' },
+              '-=0.2'
+            );
+          }
+
+          if (card) {
+            tl.fromTo(
+              card,
+              { opacity: 0, y: 35, scale: 0.95 },
+              { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+              '-=0.2'
+            );
+          }
+        });
       }
     }, sectionRef);
 
@@ -101,12 +162,22 @@ export const Process: React.FC = () => {
         </div>
 
         <div className="relative max-w-4xl mx-auto">
+          {/* Static Track Line */}
           <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2 z-0" />
 
+          {/* Active Red Laser Line */}
           <div
             ref={lineRef}
             className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#A71D2A] via-[#C82333] to-[#8B0000] -translate-x-1/2 z-0 origin-top shadow-[0_0_12px_rgba(200,35,51,0.8)]"
           />
+
+          {/* Moving Laser Head Point */}
+          <div
+            ref={laserHeadRef}
+            className="absolute left-6 md:left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#C82333] shadow-[0_0_20px_#C82333] z-20 pointer-events-none flex items-center justify-center"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+          </div>
 
           <div className="space-y-12 sm:space-y-16 relative z-10">
             {steps.map((step, idx) => {
@@ -116,13 +187,13 @@ export const Process: React.FC = () => {
               return (
                 <div
                   key={step.number}
-                  className={`flex flex-col md:flex-row items-start ${
+                  className={`process-step-item flex flex-col md:flex-row items-start ${
                     isEven ? 'md:flex-row-reverse' : ''
                   } gap-6 md:gap-12 relative group`}
                 >
                   <div className="w-full md:w-1/2 pl-16 md:pl-0">
                     <Subtle3DAxis maxTilt={5}>
-                      <div className="p-6 sm:p-8 rounded-2xl bg-[#0B0D0F] border border-white/10 group-hover:border-[#A71D2A]/70 group-hover:shadow-2xl group-hover:shadow-[#A71D2A]/20 transition-all duration-500 relative">
+                      <div className="process-card p-6 sm:p-8 rounded-2xl bg-[#0B0D0F] border border-white/10 group-hover:border-[#C82333] group-hover:shadow-2xl group-hover:shadow-[#C82333]/25 transition-all duration-500 relative">
                         <div className="flex items-center justify-between mb-3">
                           <span className="font-space font-extrabold text-2xl text-[#C82333]">
                             {step.number}
@@ -147,7 +218,17 @@ export const Process: React.FC = () => {
                     </Subtle3DAxis>
                   </div>
 
-                  <div className="absolute left-6 md:left-1/2 top-6 -translate-x-1/2 w-12 h-12 rounded-full bg-[#0B0D0F] border-2 border-[#A71D2A] flex items-center justify-center text-[#C82333] group-hover:scale-125 group-hover:bg-[#A71D2A] group-hover:text-white transition-all duration-300 shadow-lg shadow-[#A71D2A]/40 z-20">
+                  {/* Horizontal Fine Connector Line */}
+                  <div
+                    className={`process-connector hidden md:block absolute top-12 ${
+                      isEven
+                        ? 'left-1/2 right-[50%] w-6 origin-right'
+                        : 'left-1/2 w-6 origin-left'
+                    } h-[1px] bg-[#C82333]/60 pointer-events-none z-10`}
+                  />
+
+                  {/* Step Milestone Node */}
+                  <div className="process-circle absolute left-6 md:left-1/2 top-6 -translate-x-1/2 w-12 h-12 rounded-full bg-[#0B0D0F] border-2 border-[#A71D2A] flex items-center justify-center text-[#C82333] group-hover:scale-125 group-hover:bg-[#A71D2A] group-hover:text-white transition-all duration-300 shadow-lg shadow-[#A71D2A]/40 z-20">
                     <IconComponent className="w-5 h-5" />
                   </div>
 

@@ -197,7 +197,7 @@ export const Contact: React.FC = () => {
                         placeholder="Jean Dupont"
                         value={formData.nom}
                         onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
+                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#C82333] focus:ring-2 focus:ring-[#C82333]/50 focus:shadow-[0_0_15px_rgba(200,35,51,0.25)] transition-all"
                       />
                     </div>
 
@@ -210,7 +210,7 @@ export const Contact: React.FC = () => {
                         placeholder="Société ou Cabinet XYZ (Optionnel)"
                         value={formData.entreprise}
                         onChange={(e) => setFormData({ ...formData, entreprise: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
+                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#C82333] focus:ring-2 focus:ring-[#C82333]/50 focus:shadow-[0_0_15px_rgba(200,35,51,0.25)] transition-all"
                       />
                     </div>
                   </div>
@@ -226,7 +226,7 @@ export const Contact: React.FC = () => {
                         placeholder="+237 6 79 28 52 76"
                         value={formData.telephone}
                         onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
+                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#C82333] focus:ring-2 focus:ring-[#C82333]/50 focus:shadow-[0_0_15px_rgba(200,35,51,0.25)] transition-all"
                       />
                     </div>
 
@@ -240,7 +240,7 @@ export const Contact: React.FC = () => {
                         placeholder="contact@exemple.cm"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#A71D2A] focus:ring-1 focus:ring-[#A71D2A] transition-colors"
+                        className="w-full px-4 py-3.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/30 font-outfit focus:outline-none focus:border-[#C82333] focus:ring-2 focus:ring-[#C82333]/50 focus:shadow-[0_0_15px_rgba(200,35,51,0.25)] transition-all"
                       />
                     </div>
                   </div>

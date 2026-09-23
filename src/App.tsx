@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 import { InterSectionTransition } from './components/motion/MotionSignatures';
 import { CustomCursor } from './components/CustomCursor';
+import { ScrollProgress } from './components/ScrollProgress';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { MetalInMotion } from './components/MetalInMotion';
@@ -60,6 +61,9 @@ export const App: React.FC = () => {
     <div className="relative min-h-screen bg-[#0B0D0F] text-[#F4F4F0] font-outfit selection:bg-[#D87932] selection:text-white overflow-x-hidden">
       {/* Custom follower magnet cursor */}
       <CustomCursor />
+
+      {/* Global Scroll Progress Bar */}
+      <ScrollProgress />
 
       {/* Header */}
       <Navbar onOpenQuoteModal={() => setQuoteModalOpen(true)} />

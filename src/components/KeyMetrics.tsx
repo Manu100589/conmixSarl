@@ -26,6 +26,29 @@ export const KeyMetrics: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // 1. Entrance animation for metric blocks
+      const items = sectionRef.current?.querySelectorAll('.metric-box');
+      if (items) {
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 50, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      // 2. Animated count-up from 0
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top 80%',
@@ -58,31 +81,33 @@ export const KeyMetrics: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {metrics.map((metric, idx) => (
-            <Subtle3DAxis key={idx} maxTilt={6}>
-              <div
-                className="relative p-6 sm:p-8 rounded-2xl bg-[#1A1D20]/50 border border-white/10 hover:border-[#A71D2A]/50 transition-all duration-300 group flex flex-col justify-between h-full"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#A71D2A]/10 blur-2xl pointer-events-none group-hover:bg-[#A71D2A]/20 transition-all duration-500 rounded-full" />
+            <div key={idx} className="metric-box">
+              <Subtle3DAxis maxTilt={6}>
+                <div
+                  className="relative p-6 sm:p-8 rounded-2xl bg-[#1A1D20]/50 border border-white/10 hover:border-[#C82333]/60 hover:shadow-2xl hover:shadow-[#C82333]/20 transition-all duration-300 group flex flex-col justify-between h-full"
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#A71D2A]/10 blur-2xl pointer-events-none group-hover:bg-[#C82333]/25 transition-all duration-500 rounded-full" />
 
-                <div>
-                  <div className="font-syne font-black text-4xl sm:text-6xl lg:text-7xl text-white tracking-tighter flex items-baseline">
-                    {metric.prefix && <span className="text-[#C82333] mr-1">{metric.prefix}</span>}
-                    <span>{counts[idx]}</span>
-                    {metric.suffix && <span className="text-xl sm:text-3xl text-[#C82333] ml-1 font-space font-bold">{metric.suffix}</span>}
+                  <div>
+                    <div className="font-syne font-black text-4xl sm:text-6xl lg:text-7xl text-white tracking-tighter flex items-baseline group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#F87171] transition-all duration-300">
+                      {metric.prefix && <span className="text-[#C82333] mr-1">{metric.prefix}</span>}
+                      <span>{counts[idx]}</span>
+                      {metric.suffix && <span className="text-xl sm:text-3xl text-[#C82333] ml-1 font-space font-bold">{metric.suffix}</span>}
+                    </div>
+
+                    <div className="h-[2px] w-12 bg-[#C82333] my-4 group-hover:w-full transition-all duration-500 shadow-[0_0_8px_rgba(200,35,51,0.8)]" />
+
+                    <h3 className="font-syne font-bold text-sm sm:text-base text-white uppercase tracking-wider">
+                      {metric.label}
+                    </h3>
                   </div>
 
-                  <div className="h-[2px] w-12 bg-[#C82333] my-4 group-hover:w-full transition-all duration-500" />
-
-                  <h3 className="font-syne font-bold text-sm sm:text-base text-white uppercase tracking-wider">
-                    {metric.label}
-                  </h3>
+                  <p className="text-xs font-space text-[#9CA3AF] mt-2">
+                    {metric.sublabel}
+                  </p>
                 </div>
-
-                <p className="text-xs font-space text-[#9CA3AF] mt-2">
-                  {metric.sublabel}
-                </p>
-              </div>
-            </Subtle3DAxis>
+              </Subtle3DAxis>
+            </div>
           ))}
         </div>
       </div>

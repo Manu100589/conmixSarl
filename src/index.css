@@ -165,9 +165,69 @@ body {
   clip-path: inset(100% 0 0 0);
 }
 
+/* Light sweep for MÉTAL and headline keywords */
+@keyframes light-sweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.text-metal-sweep {
+  background: linear-gradient(
+    110deg,
+    #FFFFFF 0%,
+    #F4F4F0 25%,
+    #C82333 45%,
+    #FFFFFF 50%,
+    #F87171 55%,
+    #A71D2A 75%,
+    #FFFFFF 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: light-sweep 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  text-shadow: 0 0 35px rgba(200, 35, 51, 0.4);
+}
+
+/* Subtle Technical Blueprint Pattern */
+.bg-blueprint-lines {
+  background-image: 
+    linear-gradient(to right, rgba(200, 35, 51, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(200, 35, 51, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Film Grain Overlay */
+.bg-noise {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0);
+  background-size: 8px 8px;
+}
+
+/* Section Overlap Depth Shadow */
+.section-panel-shadow {
+  box-shadow: 0 -25px 50px -12px rgba(0, 0, 0, 0.75);
+}
+
 /* Custom Magnet Cursor */
 @media (pointer: fine) {
   body {
     cursor: default;
+  }
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .parallax-line, .will-change-transform {
+    transform: none !important;
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUp, ShieldCheck, Award } from 'lucide-react';
-import { KineticTracking } from './motion/MotionSignatures';
+import { KineticTracking, ParallaxWatermark } from './motion/MotionSignatures';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -9,7 +9,10 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#0B0D0F] text-[#9CA3AF] border-t border-white/10 pt-16 pb-12 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Monumental Parallax Watermark in Footer Backdrop */}
+      <ParallaxWatermark text="CONMIX" speed={0.3} align="right" className="bottom-4 -right-12 opacity-5 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Grand Titre d'Appel Haute Couture KineticTracking */}
         <div className="pb-12 border-b border-white/10 mb-12">
           <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white tracking-tight uppercase leading-[0.92]">

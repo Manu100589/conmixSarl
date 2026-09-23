@@ -9,45 +9,102 @@ gsap.registerPlugin(ScrollTrigger);
 export const Introduction: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const imageWrapperRef = useRef<HTMLDivElement | null>(null);
+  const imgElementRef = useRef<HTMLImageElement | null>(null);
+  const laserScannerRef = useRef<HTMLDivElement | null>(null);
+  const blueprintGridRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const wrapper = imageWrapperRef.current;
+    const img = imgElementRef.current;
+    const scanner = laserScannerRef.current;
+    const blueprint = blueprintGridRef.current;
+    const text = textRef.current;
+    if (!section || !wrapper) return;
+
     const ctx = gsap.context(() => {
-      if (imageWrapperRef.current) {
-        gsap.fromTo(
-          imageWrapperRef.current,
-          { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.1 },
+      // Machine-manufactured Blueprint Reveal
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrapper,
+          start: 'top 80%',
+          once: true,
+        },
+      });
+
+      // 1. Initial states: scale 1.08, clip-path inset(0 100% 0 0)
+      tl.set(wrapper, { clipPath: 'inset(0 100% 0 0)' })
+        .set(img, { scale: 1.12 })
+        .set(scanner, { left: '0%', opacity: 1 })
+        .to(wrapper, {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 1.4,
+          ease: 'power3.inOut',
+        })
+        .to(
+          scanner,
           {
-            clipPath: 'inset(0% 0% 0% 0%)',
+            left: '100%',
+            duration: 1.4,
+            ease: 'power3.inOut',
+            onComplete: () => {
+              gsap.to(scanner, { opacity: 0, duration: 0.3 });
+            },
+          },
+          '<'
+        )
+        .to(
+          img,
+          {
             scale: 1,
             duration: 1.4,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 70%',
-            },
-          }
+            ease: 'power2.out',
+          },
+          '<'
+        )
+        .to(
+          blueprint,
+          {
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+          '-=0.6'
         );
-      }
 
-      if (textRef.current) {
+      // Subtle parallax on the craft image container during continuous scroll
+      gsap.to(wrapper, {
+        yPercent: -10,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      });
+
+      // Text elements sequential reveal
+      if (text) {
         gsap.fromTo(
-          textRef.current.children,
-          { opacity: 0, y: 30 },
+          text.children,
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            stagger: 0.15,
+            duration: 0.85,
+            stagger: 0.12,
             ease: 'power2.out',
             scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 75%',
+              trigger: text,
+              start: 'top 80%',
+              once: true,
             },
           }
         );
       }
-    }, sectionRef);
+    }, section);
 
     return () => ctx.revert();
   }, []);
@@ -133,27 +190,62 @@ export const Introduction: React.FC = () => {
             </div>
           </div>
 
+          {/* Machine-Manufactured Blueprint Visual */}
           <div className="lg:col-span-5 relative">
             <div
               ref={imageWrapperRef}
-              className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/15 aspect-[4/5] group"
+              data-cursor="view"
+              className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/15 aspect-[4/5] group bg-black will-change-transform"
             >
+              {/* Vertical Laser Beam traversing the image */}
+              <div
+                ref={laserScannerRef}
+                className="absolute top-0 bottom-0 w-[2px] bg-[#C82333] shadow-[0_0_20px_#C82333,0_0_40px_#F87171] z-30 pointer-events-none"
+              />
+
               <img
+                ref={imgElementRef}
                 src="/imagi/550317449_1099029452293173_6664467472333154406_n.jpg"
                 alt="Escalier metallique sur mesure CONMIX Real Craft"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out will-change-transform"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-transparent to-transparent opacity-85" />
 
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#1A1D20]/90 backdrop-blur-md border border-white/10 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-space tracking-widest text-[#C82333] uppercase font-bold">RÉALISATION ATELIER</span>
-                    <h4 className="font-syne font-bold text-sm text-white">Escalier Métallique Sur Mesure</h4>
-                  </div>
-                  <span className="text-xs font-space px-2.5 py-1 rounded bg-[#A71D2A]/20 border border-[#A71D2A]/40 text-[#C82333] font-semibold">
-                    2025
+              {/* Technical Blueprint Overlay: Crosshairs, dimensions, coordinates */}
+              <div
+                ref={blueprintGridRef}
+                className="absolute inset-0 z-20 pointer-events-none opacity-0 transition-opacity duration-700 p-6 flex flex-col justify-between"
+              >
+                {/* Top Corner Technical Dimensions */}
+                <div className="flex items-center justify-between text-[10px] font-space text-white/60 tracking-wider">
+                  <span className="flex items-center space-x-1">
+                    <span className="text-[#C82333]">+</span>
+                    <span>W: 1420mm • H: 2860mm</span>
                   </span>
+                  <span>TOLÉRANCE: ±0.1mm</span>
+                </div>
+
+                {/* Center Crosshair Laser Target */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 pointer-events-none">
+                  <div className="w-full h-[1px] bg-[#C82333]/40 absolute top-1/2 left-0 -translate-y-1/2" />
+                  <div className="h-full w-[1px] bg-[#C82333]/40 absolute left-1/2 top-0 -translate-x-1/2" />
+                  <div className="w-4 h-4 rounded-full border border-[#C82333]/60 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-ping" />
+                </div>
+
+                {/* Bottom Technical Spec Label */}
+                <div className="p-4 rounded-xl bg-[#0B0D0F]/90 backdrop-blur-md border border-white/10 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-space tracking-widest text-[#C82333] uppercase font-bold flex items-center space-x-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#C82333] animate-pulse" />
+                        <span>RÉALISATION ATELIER • S355</span>
+                      </span>
+                      <h4 className="font-syne font-bold text-sm text-white mt-0.5">Escalier Métallique Sur Mesure</h4>
+                    </div>
+                    <span className="text-xs font-space px-2.5 py-1 rounded bg-[#A71D2A]/20 border border-[#A71D2A]/40 text-[#C82333] font-semibold">
+                      2025
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

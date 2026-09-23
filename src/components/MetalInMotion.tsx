@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layers, Flame, Compass, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
-import { KineticTracking } from './motion/MotionSignatures';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const MetalInMotion: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const verticalLineRef = useRef<HTMLDivElement | null>(null);
+  const titleLinesRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const bgGridRef = useRef<HTMLDivElement | null>(null);
+  const cardsContainerRef = useRef<HTMLDivElement | null>(null);
 
   const steps = [
     {
@@ -48,27 +56,160 @@ export const MetalInMotion: React.FC = () => {
     },
   ];
 
-  return (
-    <section className="relative py-20 bg-[#0B0D0F] border-y border-white/10 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#A71D2A]/10 blur-[140px] pointer-events-none rounded-full" />
+  useEffect(() => {
+    const section = sectionRef.current;
+    const vLine = verticalLineRef.current;
+    const lines = titleLinesRef.current.filter(Boolean);
+    const bg = bgGridRef.current;
+    const cards = cardsContainerRef.current;
+    if (!section) return;
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    const ctx = gsap.context(() => {
+      // 1. Title line by line reveal with clip-path
+      if (lines.length > 0) {
+        gsap.fromTo(
+          lines,
+          {
+            y: 45,
+            opacity: 0,
+            clipPath: 'inset(100% 0 0 0)',
+          },
+          {
+            y: 0,
+            opacity: 1,
+            clipPath: 'inset(0% 0 0 0)',
+            duration: 0.9,
+            stagger: 0.08,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 2. Growing technical red vertical drawing line
+      if (vLine) {
+        gsap.fromTo(
+          vLine,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 75%',
+              end: 'bottom 85%',
+              scrub: 1,
+            },
+          }
+        );
+      }
+
+      // 3. Subtle horizontal movement of background layer (multi-layer parallax)
+      if (bg) {
+        gsap.fromTo(
+          bg,
+          { xPercent: -3 },
+          {
+            xPercent: 3,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      }
+
+      // 4. Staggered reveal of step selector cards
+      if (cards && cards.children) {
+        gsap.fromTo(
+          cards.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cards,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      id="metal-motion"
+      ref={sectionRef}
+      className="relative py-24 bg-[#0B0D0F] border-y border-white/10 overflow-hidden"
+    >
+      {/* Background Layer: Horizontal drifting blueprint layer */}
+      <div
+        ref={bgGridRef}
+        className="absolute inset-0 bg-blueprint-lines opacity-20 pointer-events-none will-change-transform"
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-[#A71D2A]/10 blur-[150px] pointer-events-none rounded-full" />
+
+      {/* Vertical technical red drawing line on left */}
+      <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-[1px] bg-white/5 pointer-events-none">
+        <div
+          ref={verticalLineRef}
+          className="w-full h-full bg-gradient-to-b from-[#C82333] via-[#A71D2A] to-transparent origin-top shadow-[0_0_10px_#C82333]"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pl-8 sm:pl-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
             <div className="flex items-center space-x-2 text-xs font-space text-[#C82333] uppercase tracking-widest mb-2 font-semibold">
               <Sparkles className="w-4 h-4" />
               <span>Concept Exclusif CONMIX</span>
             </div>
-            <KineticTracking tag="h2" className="font-syne font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight uppercase">
-              LE MÉTAL EN MOUVEMENT
-            </KineticTracking>
+
+            <h2 className="font-syne font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight uppercase leading-tight">
+              <span className="block overflow-hidden">
+                <span
+                  ref={(el) => {
+                    titleLinesRef.current[0] = el;
+                  }}
+                  className="inline-block"
+                >
+                  LE MÉTAL
+                </span>
+              </span>
+              <span className="block overflow-hidden">
+                <span
+                  ref={(el) => {
+                    titleLinesRef.current[1] = el;
+                  }}
+                  className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F4F4F0] to-[#C82333]"
+                >
+                  EN MOUVEMENT
+                </span>
+              </span>
+            </h2>
           </div>
+
           <p className="text-sm sm:text-base text-[#9CA3AF] font-outfit max-w-md">
             Découvrez la métamorphose de la matière brute en un ouvrage métallique sur-mesure d'exception.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        {/* Step Selector Cards */}
+        <div ref={cardsContainerRef} className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {steps.map((step, idx) => {
             const isActive = activeStep === idx;
             return (
@@ -77,7 +218,7 @@ export const MetalInMotion: React.FC = () => {
                 onClick={() => setActiveStep(idx)}
                 className={`interactive text-left p-4 rounded-xl transition-all duration-300 border ${
                   isActive
-                    ? 'bg-[#1A1D20] border-[#A71D2A] shadow-xl shadow-[#A71D2A]/20 translate-y-[-2px]'
+                    ? 'bg-[#1A1D20] border-[#A71D2A] shadow-xl shadow-[#A71D2A]/25 translate-y-[-2px]'
                     : 'bg-[#1A1D20]/40 border-white/10 hover:border-white/20 text-white/60'
                 }`}
               >
@@ -100,6 +241,7 @@ export const MetalInMotion: React.FC = () => {
           })}
         </div>
 
+        {/* Step Active Detail Card */}
         <div
           className={`relative rounded-2xl p-6 sm:p-10 border transition-all duration-500 overflow-hidden ${steps[activeStep].visualStyle}`}
         >

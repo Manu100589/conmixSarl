@@ -26,7 +26,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ onOpenQuoteModal }) => {
             <SplitMaskReveal>
               <h2 className="font-syne font-black text-4xl sm:text-6xl md:text-7xl text-white tracking-tight uppercase leading-[0.92]">
                 <MaskLine>VOUS AVEZ UN</MaskLine>
-                <MaskLine className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#F4F4F0] to-[#C82333] drop-shadow-[0_0_35px_rgba(200,35,51,0.5)]">
+                <MaskLine className="text-metal-sweep drop-shadow-[0_0_40px_rgba(200,35,51,0.7)]">
                   PROJET ?
                 </MaskLine>
               </h2>

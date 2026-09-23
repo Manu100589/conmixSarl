@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Maximize2, Sparkles, Filter, X } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { KineticTracking, Subtle3DAxis, ParallaxWatermark } from './motion/MotionSignatures';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Project {
   id: string;
@@ -99,6 +103,8 @@ export const projectsData: Project[] = [
 export const Showcase: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('Tous');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
 
   const categories = ['Tous', 'Escaliers', 'Verrières', 'Portails & Clôtures', 'Garde-corps', 'Structures'];
 
@@ -107,8 +113,39 @@ export const Showcase: React.FC = () => {
       ? projectsData
       : projectsData.filter((p) => p.category === activeFilter);
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const items = gridRef.current?.querySelectorAll('.showcase-card-item');
+      if (items && items.length > 0) {
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 50, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [activeFilter]);
+
   return (
-    <section id="showcase" className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10">
+    <section
+      id="showcase"
+      ref={sectionRef}
+      className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10"
+    >
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#A71D2A]/10 blur-[160px] pointer-events-none rounded-full" />
 
@@ -155,56 +192,61 @@ export const Showcase: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProjects.map((project) => (
-            <Subtle3DAxis key={project.id} maxTilt={6}>
-              <div
-                onClick={() => setSelectedProject(project)}
-                className="interactive group relative bg-[#1A1D20]/60 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A]/70 hover:shadow-2xl hover:shadow-[#A71D2A]/30 cursor-pointer h-full"
-              >
-              <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/30 to-transparent opacity-80" />
+            <div key={project.id} className="showcase-card-item">
+              <Subtle3DAxis maxTilt={6}>
+                <div
+                  onClick={() => setSelectedProject(project)}
+                  data-cursor="view"
+                  className="interactive group relative bg-[#1A1D20]/60 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#C82333] hover:shadow-2xl hover:shadow-[#C82333]/25 cursor-pointer h-full"
+                >
+                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/30 to-transparent opacity-80" />
 
-                <div className="absolute top-4 left-4 flex items-center space-x-2">
-                  <span className="px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-xs font-space font-semibold text-[#C82333]">
-                    {project.category}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-space text-white/80">
-                    {project.year}
-                  </span>
+                    <div className="absolute top-4 left-4 flex items-center space-x-2">
+                      <span className="px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-xs font-space font-semibold text-[#C82333]">
+                        {project.category}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-space text-white/80">
+                        {project.year}
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                      <Maximize2 className="w-4 h-4 text-[#C82333]" />
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-3">
+                    <div className="flex items-center justify-between text-xs font-space text-[#9CA3AF]">
+                      <span>{project.location}</span>
+                      <span className="text-[#C82333] font-medium">{project.clientType}</span>
+                    </div>
+
+                    <h3 className="font-syne font-bold text-lg sm:text-xl text-white group-hover:text-[#C82333] transition-colors leading-snug">
+                      {project.title}
+                    </h3>
+
+                    <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 shadow-[0_0_8px_rgba(200,35,51,0.8)]" />
+
+                    <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit line-clamp-2">
+                      {project.description}
+                    </p>
+
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-space text-white group-hover:text-[#C82333] transition-colors">
+                      <span>Voir le projet complet</span>
+                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" />
+                    </div>
+                  </div>
                 </div>
-
-                <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                  <Maximize2 className="w-4 h-4 text-[#C82333]" />
-                </div>
-              </div>
-
-              <div className="p-6 space-y-3">
-                <div className="flex items-center justify-between text-xs font-space text-[#9CA3AF]">
-                  <span>{project.location}</span>
-                  <span className="text-[#C82333] font-medium">{project.clientType}</span>
-                </div>
-
-                <h3 className="font-syne font-bold text-lg sm:text-xl text-white group-hover:text-[#C82333] transition-colors leading-snug">
-                  {project.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-[#9CA3AF] font-outfit line-clamp-2">
-                  {project.description}
-                </p>
-
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-space text-white group-hover:text-[#C82333] transition-colors">
-                  <span>Voir le projet complet</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform" />
-                </div>
-              </div>
+              </Subtle3DAxis>
             </div>
-            </Subtle3DAxis>
           ))}
         </div>
       </div>

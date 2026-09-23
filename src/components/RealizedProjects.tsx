@@ -1,6 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight, X, Layers, Image as ImageIcon } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitMaskReveal, MaskLine, Subtle3DAxis, ParallaxWatermark, ParallaxLayer } from './motion/MotionSignatures';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export interface RealizedProject {
   id: string;
@@ -111,6 +115,8 @@ export const RealizedProjects: React.FC = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const openGallery = (project: RealizedProject) => {
     setSelectedProject(project);
@@ -144,8 +150,43 @@ export const RealizedProjects: React.FC = () => {
     setActiveSlide(index);
   };
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Desktop cards entrance and subtle skew-recovery scroll effect
+      const cards = sliderRef.current?.querySelectorAll('.realized-card-box');
+      if (cards && cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 70, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.9,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+              onUpdate: (self) => {
+                setScrollProgress(Math.round(self.progress * 100));
+              },
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="projets-realises" className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10">
+    <section
+      id="projets-realises"
+      ref={sectionRef}
+      className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10"
+    >
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
       <ParallaxLayer speed={-0.35} className="absolute top-1/4 right-0 pointer-events-none">
         <div className="w-[600px] h-[600px] bg-[#A71D2A]/10 blur-[180px] rounded-full" />
@@ -168,9 +209,22 @@ export const RealizedProjects: React.FC = () => {
               </h2>
             </SplitMaskReveal>
           </div>
-          <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
-            Découvrez nos réalisations phares en construction métallique d'usines complexes, pose de bardage, fermes et mezzanines industrielles.
-          </p>
+          <div className="flex flex-col items-start md:items-end gap-2">
+            <p className="text-base text-[#9CA3AF] font-outfit max-w-md">
+              Découvrez nos réalisations phares en construction métallique d'usines complexes, pose de bardage, fermes et mezzanines industrielles.
+            </p>
+            {/* Real-time Section Progression Indicator */}
+            <div className="hidden lg:flex items-center space-x-3 text-xs font-space text-[#9CA3AF]">
+              <span>PROGRESSION SECTION</span>
+              <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-[#A71D2A] to-[#C82333] transition-all duration-150"
+                  style={{ width: `${Math.max(10, scrollProgress)}%` }}
+                />
+              </div>
+              <span className="text-[#C82333] font-bold">03 CHANTIERS</span>
+            </div>
+          </div>
         </div>
 
         {/* Projects Cards Container - Grid on Desktop, Horizontal Snap Slider on Mobile */}
@@ -179,14 +233,15 @@ export const RealizedProjects: React.FC = () => {
           onScroll={handleScroll}
           className="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-6 pb-6 pt-2"
         >
-          {realizedProjectsData.map((project) => (
+          {realizedProjectsData.map((project, idx) => (
             <div
               key={project.id}
-              className="w-[88vw] sm:w-[70vw] lg:w-auto shrink-0 snap-center lg:shrink flex"
+              className="realized-card-box w-[88vw] sm:w-[70vw] lg:w-auto shrink-0 snap-center lg:shrink flex"
             >
-              <Subtle3DAxis maxTilt={6} className="h-full">
+              <Subtle3DAxis maxTilt={6} className="h-full w-full">
                 <div
-                  className="interactive group bg-[#1A1D20]/75 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#A71D2A] hover:shadow-2xl hover:shadow-[#A71D2A]/30 h-full"
+                  data-cursor="explore"
+                  className="project-card interactive group bg-[#1A1D20]/75 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-2 hover:border-[#C82333] hover:shadow-2xl hover:shadow-[#C82333]/30 h-full"
                 >
                   <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-black">
                     <img
@@ -198,6 +253,10 @@ export const RealizedProjects: React.FC = () => {
 
                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D0F]/85 backdrop-blur-md border border-white/15 text-[10px] sm:text-[11px] font-space font-bold text-[#C82333] tracking-widest uppercase">
                       {project.badge}
+                    </div>
+
+                    <div className="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-space text-white/80">
+                      0{idx + 1} / 03
                     </div>
 
                     <div className="absolute bottom-4 right-4 flex items-center space-x-1 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-xs font-space text-white border border-white/15">
@@ -216,6 +275,8 @@ export const RealizedProjects: React.FC = () => {
                         {project.title}
                       </h3>
 
+                      <div className="h-[2px] w-0 group-hover:w-full bg-[#C82333] transition-all duration-500 shadow-[0_0_8px_rgba(200,35,51,0.8)]" />
+
                       <div className="p-4 rounded-xl bg-[#0B0D0F]/80 border border-white/10 space-y-3">
                         <div className="flex items-center space-x-2 text-xs font-space font-semibold text-[#C82333] uppercase tracking-wider">
                           <Layers className="w-4 h-4" />
@@ -223,8 +284,8 @@ export const RealizedProjects: React.FC = () => {
                         </div>
 
                         <ul className="space-y-2 text-xs font-outfit text-[#9CA3AF]">
-                          {project.activities.map((act, idx) => (
-                            <li key={idx} className="flex items-start space-x-2">
+                          {project.activities.map((act, actIdx) => (
+                            <li key={actIdx} className="flex items-start space-x-2">
                               <CheckCircle2 className="w-4 h-4 text-[#C82333] shrink-0 mt-0.5" />
                               <span className="text-white/90">{act}</span>
                             </li>
