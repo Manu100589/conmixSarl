@@ -9,7 +9,9 @@ import {
   PhoneCall,
   MapPin,
   ExternalLink,
-  RotateCcw
+  RotateCcw,
+  Wrench,
+  DollarSign
 } from 'lucide-react';
 
 interface ChatbotProps {
@@ -29,23 +31,24 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
-  'Quels sont vos services ?',
-  'Comment obtenir un devis ?',
-  'Où êtes-vous situés ?',
-  'Quels sont vos délais ?',
-  'Proposez-vous des formations ?',
-  'Vos réalisations d\'usines ?',
+  '🛠️ Les 5 Services',
+  '💰 Tarifs & Prix',
+  '📍 Localisation exacte',
+  '📋 Devis gratuit (24h)',
+  '💬 WhatsApp Direct',
+  '🏭 Projets d\'usines',
 ];
 
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
     sender: 'bot',
-    text: "Bonjour et bienvenue chez **CONMIX SARL** ! 🛠️\n\nJe suis votre assistant virtuel spécialisé en **menuiserie métallique, construction d'usines et génie civil** au Cameroun.\n\nComment puis-je vous aider aujourd'hui ?",
+    text: "Bonjour et bienvenue chez **CONMIX SARL** ! 🛠️🇨🇲\n\nJe réponds instantanément à vos questions sur **nos services**, **nos tarifs & prix indicatifs**, et **notre localisation** à Babenga (Littoral).\n\nQue souhaitez-vous savoir ?",
     time: 'À l\'instant',
     actionButtons: [
-      { label: '📋 Demander un devis', actionType: 'quote' },
-      { label: '💬 WhatsApp Direct', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+      { label: '🛠️ Nos 5 Services', actionType: 'link', target: '#services' },
+      { label: '💰 Tarifs & Prix', actionType: 'quote' },
+      { label: '📍 Localisation', actionType: 'link', target: '#contact' },
     ],
   },
 ];
@@ -81,7 +84,111 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
   const generateBotResponse = (query: string): { text: string; actionButtons?: Message['actionButtons'] } => {
     const q = query.toLowerCase().trim();
 
-    // 1. Salutations / Greetings
+    // 1. Services / Prestations (Direct and explicit)
+    if (
+      q.includes('service') ||
+      q.includes('prestation') ||
+      q.includes('que faites') ||
+      q.includes('activite') ||
+      q.includes('activités') ||
+      q.includes('menuiserie') ||
+      q.includes('charpente') ||
+      q.includes('savoir-faire') ||
+      q.includes('5 services')
+    ) {
+      return {
+        text: "🛠️ **LES 5 SERVICES OFFICIELS DE CONMIX SARL** :\n\n" +
+          "1. 📐 **ÉTUDE DE PROJET**\n" +
+          "   • Modélisation 3D BIM, plans d'exécution CAO\n" +
+          "   • Notes de calculs d'ingénierie selon les normes Eurocodes\n\n" +
+          "2. 🏗️ **CONSTRUCTION MÉTALLIQUE**\n" +
+          "   • Usines et complexes industriels (ex: agro-alimentaire, papeterie, SOCORPA)\n" +
+          "   • Charpentes acier S355, ossatures, hangars, passerelles\n\n" +
+          "3. 🚪 **MENUISERIE MÉTALLIQUE SUR MESURE**\n" +
+          "   • Portes métalliques renforcées & blindées\n" +
+          "   • Verrières d'atelier contemporaines, cloisons vitrées\n" +
+          "   • Escaliers d'art (suspendus, hélicoïdaux, limon central)\n" +
+          "   • Garde-corps de sécurité NF et portails motorisés laser\n\n" +
+          "4. 🧱 **GÉNIE CIVIL**\n" +
+          "   • Fondations spéciales, coulage de dallages industriels haute charge\n" +
+          "   • Gros œuvre et ancrages métalliques pour structures lourdes\n\n" +
+          "5. 🎓 **FORMATION PROFESSIONNELLE**\n" +
+          "   • Modules certifiants en soudure haute précision (TIG / MIG)\n" +
+          "   • Chaudronnerie, lecture de plans et règles de sécurité chantier.",
+        actionButtons: [
+          { label: '📋 Demander un devis projet', actionType: 'quote' },
+          { label: '💬 Échanger sur WhatsApp', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+        ],
+      };
+    }
+
+    // 2. Tarifs / Prix / Estimation / Coût (Direct, transparent and comprehensive)
+    if (
+      q.includes('prix') ||
+      q.includes('tarif') ||
+      q.includes('cout') ||
+      q.includes('coût') ||
+      q.includes('combien') ||
+      q.includes('budget') ||
+      q.includes('devis') ||
+      q.includes('facture') ||
+      q.includes('estimation') ||
+      q.includes('payer') ||
+      q.includes('argent')
+    ) {
+      return {
+        text: "💰 **GRILLE DES PRIX & MODALITÉS TARIFAIRES CONMIX SARL** :\n\n" +
+          "Tous nos ouvrages métalliques sont réalisés **100% sur mesure**. Voici des fourchettes tarifaires indicatives :\n\n" +
+          "• 🚪 **Portes métalliques & blindées** : dès **150 000 FCFA à 450 000 FCFA** (selon serrure haute sécurité, blindage ou vitrage feuilleté).\n" +
+          "• 🪟 **Verrières d'atelier & cloisons vitrées** : environ **80 000 à 160 000 FCFA / m²** (profils acier fins + vitrage de sécurité 33.2 ou 44.2).\n" +
+          "• 🪜 **Escaliers métalliques d'art** : de **600 000 FCFA à 2 500 000 FCFA** selon configuration (droit, quart-tournant, hélicoïdal, marches chêne/verre).\n" +
+          "• 🚧 **Garde-corps & balustrades NF** : de **35 000 à 90 000 FCFA / mètre linéaire**.\n" +
+          "• 🏗️ **Charpentes industrielles & Usines** : chiffrage précis au m² ou à la tonne selon l'étude de charge.\n" +
+          "• 🧱 **Génie Civil & Dallages** : sur métré selon l'épaisseur et l'armature requise.\n" +
+          "• 🎓 **Formations professionnelles** : tarifs forfaitaires modulaires très accessibles.\n\n" +
+          "⚡ **VOTRE DEVIS EST 100% GRATUIT sous 24h à 48h !**",
+        actionButtons: [
+          { label: '📋 Remplir mon devis gratuit', actionType: 'quote' },
+          { label: '💬 WhatsApp chiffrage rapide', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+        ],
+      };
+    }
+
+    // 3. Localisation / Où êtes-vous / Adresse (Direct and exact)
+    if (
+      q.includes('où') ||
+      q.includes('ou') ||
+      q.includes('localisation') ||
+      q.includes('adresse') ||
+      q.includes('lieu') ||
+      q.includes('situe') ||
+      q.includes('situé') ||
+      q.includes('babenga') ||
+      q.includes('littoral') ||
+      q.includes('douala') ||
+      q.includes('cameroun') ||
+      q.includes('ville') ||
+      q.includes('trouver') ||
+      q.includes('carte') ||
+      q.includes('maps')
+    ) {
+      return {
+        text: "📍 **LOCALISATION EXACTE DE CONMIX SARL** :\n\n" +
+          "🏢 **Siège & Atelier de Chaudronnerie / Fabrication** :\n" +
+          "👉 **Babenga, Région du Littoral, Cameroun**.\n\n" +
+          "🗺️ **Situation Géographique & Accès** :\n" +
+          "• Positionné au cœur du bassin économique du Littoral, facilitant les transports lourds d'acier et de structures métalliques vers **Douala** et l'ensemble des régions du Cameroun.\n" +
+          "• Nous intervenons et livrons partout au Cameroun et en Afrique Centrale.\n\n" +
+          "🧭 **Google Maps** : Une carte interactive en direct est consultable dans la section Contact de notre site web.",
+        actionButtons: [
+          { label: '🗺️ Voir sur Google Maps', actionType: 'link', target: '#contact' },
+          { label: '📞 Appeler l\'atelier (+237 6 79 28 52 76)', actionType: 'call', target: '+237679285276' },
+          { label: '💬 WhatsApp localisation', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+        ],
+      };
+    }
+
+    // 4. Salutations / Greetings
     if (
       q.includes('bonjour') ||
       q.includes('salut') ||
@@ -91,84 +198,11 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
       q === 'hi'
     ) {
       return {
-        text: "Bonjour ! C'est un plaisir de vous accueillir. Souhaitez-vous des détails sur nos ouvrages métalliques, nos chantiers d'usines ou faire une demande de devis ?",
+        text: "Bonjour ! C'est un grand plaisir de vous accueillir chez **CONMIX SARL**.\n\nJe suis à votre disposition pour vous renseigner instantanément sur :\n1. **Nos 5 Services** (Ingénierie, Métallerie, Usines, Génie Civil, Formations)\n2. **Nos Tarifs & Devis gratuits sous 24h**\n3. **Notre Localisation à Babenga (Littoral)**.\n\nQue désirez-vous savoir ?",
         actionButtons: [
-          { label: '🛠️ Voir nos services', actionType: 'link', target: '#services' },
-          { label: '📋 Demander un devis', actionType: 'quote' },
-        ],
-      };
-    }
-
-    // 2. Services / Prestations
-    if (
-      q.includes('service') ||
-      q.includes('prestation') ||
-      q.includes('que faites') ||
-      q.includes('activite') ||
-      q.includes('activités') ||
-      q.includes('menuiserie') ||
-      q.includes('charpente') ||
-      q.includes('savoir-faire')
-    ) {
-      return {
-        text: "**CONMIX SARL** propose 5 services majeurs d'expertise :\n\n" +
-          "1. **📐 Étude de projet** : Relevés 3D BIM, modélisation CAO, calculs Eurocodes.\n" +
-          "2. **🏗️ Construction métallique** : Usines, charpentes industrielles, passerelles, ossatures acier.\n" +
-          "3. **🚪 Menuiserie métallique** : Portes blindées, verrières d'atelier, escaliers d'art, garde-corps, portails.\n" +
-          "4. **🧱 Génie civil** : Fondations spéciales, dallages industriels, gros œuvre béton/acier.\n" +
-          "5. **🎓 Formation professionnelle** : Métallerie, soudure TIG/MIG et sécurité sur chantier.",
-        actionButtons: [
-          { label: '🔎 Explorer les services', actionType: 'link', target: '#services' },
-          { label: '📋 Chiffrer un projet', actionType: 'quote' },
-        ],
-      };
-    }
-
-    // 3. Devis / Tarifs / Prix / Estimation
-    if (
-      q.includes('devis') ||
-      q.includes('prix') ||
-      q.includes('tarif') ||
-      q.includes('cout') ||
-      q.includes('coût') ||
-      q.includes('combien') ||
-      q.includes('budget') ||
-      q.includes('facture') ||
-      q.includes('estimation')
-    ) {
-      return {
-        text: "Nos devis sont **100% gratuits, détaillés et personnalisés** selon vos métrés et spécifications techniques !\n\n" +
-          "⏱️ **Délai d'étude** : Réponse sous **24h à 48h** par nos ingénieurs calculateurs.\n\n" +
-          "Vous pouvez soumettre votre projet directement via notre formulaire ou discuter en direct sur WhatsApp avec notre bureau d'études.",
-        actionButtons: [
-          { label: '📝 Remplir le devis en ligne', actionType: 'quote' },
-          { label: '💬 WhatsApp (+237 6 79 28 52 76)', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
-        ],
-      };
-    }
-
-    // 4. Localisation / Où êtes-vous / Adresse
-    if (
-      q.includes('où') ||
-      q.includes('ou') ||
-      q.includes('adresse') ||
-      q.includes('lieu') ||
-      q.includes('localisation') ||
-      q.includes('situe') ||
-      q.includes('situé') ||
-      q.includes('babenga') ||
-      q.includes('littoral') ||
-      q.includes('douala') ||
-      q.includes('cameroun') ||
-      q.includes('ville')
-    ) {
-      return {
-        text: "📍 Notre siège social et atelier principal sont situés à :\n\n" +
-          "**Babenga, Région du Littoral, Cameroun**.\n\n" +
-          "Nous intervenons sur l'ensemble du territoire camerounais et dans la sous-région pour les chantiers industriels et projets de standing. Une carte Google Maps interactive est disponible dans notre section Contact !",
-        actionButtons: [
-          { label: '🗺️ Voir sur Google Maps', actionType: 'link', target: '#contact' },
-          { label: '📞 Appeler l\'atelier', actionType: 'call', target: '+237679285276' },
+          { label: '🛠️ Les 5 Services', actionType: 'link', target: '#services' },
+          { label: '💰 Les Tarifs & Devis', actionType: 'quote' },
+          { label: '📍 Notre Localisation', actionType: 'link', target: '#contact' },
         ],
       };
     }
@@ -187,19 +221,20 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
       q.includes('mail')
     ) {
       return {
-        text: "Voici les canaux officiels pour contacter directement **CONMIX SARL** :\n\n" +
-          "• 📞 **Ligne directe** : **+237 6 79 28 52 76**\n" +
-          "• 💬 **WhatsApp** : **+237 6 79 28 52 76** (Échange instantané)\n" +
-          "• ✉️ **E-mail technique** : **contact@conmix-sarl.cm**\n" +
-          "• 📍 **Atelier** : Babenga, Région du Littoral, Cameroun",
+        text: "📞 **COORDONNÉES OFFICIELLES CONMIX SARL** :\n\n" +
+          "• 📱 **Téléphone direct** : **+237 6 79 28 52 76**\n" +
+          "• 💬 **WhatsApp Direct** : **+237 6 79 28 52 76** (Réponse immédiate)\n" +
+          "• ✉️ **E-mail Technique** : **contact@conmix-sarl.cm**\n" +
+          "• 📍 **Adresse** : Babenga, Région du Littoral, Cameroun\n" +
+          "• ⏰ **Horaires atelier** : Lundi – Vendredi (07h30 – 18h00), Samedi (08h00 – 14h00).",
         actionButtons: [
-          { label: '💬 Ouvrir WhatsApp', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
-          { label: '📞 Appeler maintenant', actionType: 'call', target: '+237679285276' },
+          { label: '💬 Discuter sur WhatsApp', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+          { label: '📞 Téléphoner directement', actionType: 'call', target: '+237679285276' },
         ],
       };
     }
 
-    // 6. Formations
+    // 6. Formations professionnelles
     if (
       q.includes('formation') ||
       q.includes('apprendre') ||
@@ -211,20 +246,21 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
       q.includes('chaudronnerie')
     ) {
       return {
-        text: "🎓 **CONMIX SARL** dispense des formations professionnelles certifiantes aux métiers de la métallerie :\n\n" +
-          "• **Soudure haute précision TIG / MIG** (acier, inox, aluminium)\n" +
-          "• **Chaudronnerie et assemblage de structures**\n" +
-          "• **Lecture de plans d'ingénierie et métrologie**\n" +
-          "• **Règles de sécurité et prévention sur chantier**\n\n" +
-          "Nos sessions combinent cours pratiques en atelier et cas réels.",
+        text: "🎓 **FORMATIONS PROFESSIONNELLES CONMIX SARL** :\n\n" +
+          "Nos programmes certifiants s'adressent aux particuliers et professionnels désirant acquérir un savoir-faire d'excellence :\n\n" +
+          "• **Soudure TIG & MIG** haute précision sur acier, inox et aluminium\n" +
+          "• **Chaudronnerie industrielle** et façonnage des métaux\n" +
+          "• **Lecture de plans techniques CAO / BIM** et métrologie\n" +
+          "• **Sécurité et conformité sur chantier**\n\n" +
+          "Les sessions se déroulent dans notre atelier à Babenga (Littoral).",
         actionButtons: [
-          { label: '📋 S\'inscrire / Se renseigner', actionType: 'quote' },
-          { label: '💬 WhatsApp Formation', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+          { label: '📋 Inscription & Renseignements', actionType: 'quote' },
+          { label: '💬 WhatsApp Formations', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
         ],
       };
     }
 
-    // 7. Projets réalisés / Chantiers / Usines
+    // 7. Projets d'usines / Chantiers réalisés
     if (
       q.includes('projet') ||
       q.includes('realisation') ||
@@ -233,46 +269,21 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
       q.includes('usine') ||
       q.includes('socorpa') ||
       q.includes('pisciculture') ||
-      q.includes('papier') ||
-      q.includes('reference') ||
-      q.includes('référence')
+      q.includes('papier')
     ) {
       return {
-        text: "🏭 Parmi nos réalisations industrielles majeures récentes :\n\n" +
-          "1. **Usine Alimentaire pour Pisciculture** : Pose de bardage ligne 2, fermes ligne 3, liernes et PVC.\n" +
-          "2. **Usine de Pâte à Papier** : Fabrication et pose de corbeaux, réglage structurel et mezzanine.\n" +
-          "3. **Usine SOCORPA** : Pose des bretelles ligne K, réglage et modification de mezzanine.\n\n" +
-          "Vous pouvez visualiser les galeries photos complètes dans la section Projets !",
+        text: "🏭 **NOS PROJETS MAJEURS RÉALISÉS** :\n\n" +
+          "1. 🐟 **Usine Alimentaire pour Pisciculture** : Lisses de bardage (ligne 2), fermes (ligne 3), liernes et bretelles.\n" +
+          "2. 📜 **Usine de Fabrication de Pâte à Papier** : Corbeaux, réglage de la structure, modification de mezzanine.\n" +
+          "3. 🏬 **Usine SOCORPA** : Pose des bretelles ligne K, réglage de structure et mezzanine.\n\n" +
+          "Toutes les photos réelles de ces 3 usines sont consultables sur notre page !",
         actionButtons: [
           { label: '🏭 Voir les Projets Réalisés', actionType: 'link', target: '#projets-realises' },
         ],
       };
     }
 
-    // 8. Génie civil / Bâtiment
-    if (
-      q.includes('genie civil') ||
-      q.includes('génie civil') ||
-      q.includes('beton') ||
-      q.includes('béton') ||
-      q.includes('fondation') ||
-      q.includes('dallage') ||
-      q.includes('gros oeuvre') ||
-      q.includes('gros œuvre')
-    ) {
-      return {
-        text: "🧱 Notre pôle **Génie Civil** assure la réalisation des infrastructures indispensables à vos constructions métalliques :\n\n" +
-          "• Fondations superficielles et profondes\n" +
-          "• Dallages industriels renforcés haute résistance\n" +
-          "• Massifs d'ancrage métalliques de précision\n" +
-          "• Superstructures et maçonnerie technique.",
-        actionButtons: [
-          { label: '📋 Demander une étude génie civil', actionType: 'quote' },
-        ],
-      };
-    }
-
-    // 9. Délais / Planning
+    // 8. Délais / Planning
     if (
       q.includes('delai') ||
       q.includes('délai') ||
@@ -284,53 +295,30 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
       q.includes('urgent')
     ) {
       return {
-        text: "⏱️ **Délais & Réactivité CONMIX SARL** :\n\n" +
-          "• **Chiffrage & Devis** : 24 à 48 heures\n" +
-          "• **Étude 3D & Plans** : 3 à 7 jours ouvrés\n" +
-          "• **Fabrication en atelier** : selon envergure du projet\n" +
-          "• **Pose sur site** : planifiée selon vos impératifs de chantier.\n\n" +
-          "Pour les demandes urgentes, contactez-nous directement par téléphone au **+237 6 79 28 52 76**.",
+        text: "⏱️ **NOS DÉLAIS DE RÉALISATION** :\n\n" +
+          "• **Devis & Évaluation** : 24h à 48h ouvrées\n" +
+          "• **Étude 3D & Plans d'exécution** : 3 à 7 jours\n" +
+          "• **Fabrication en atelier** : planifiée selon le cahier des charges\n" +
+          "• **Pose et réception** : respect strict des délais convenus.",
         actionButtons: [
-          { label: '📞 Appeler directement', actionType: 'call', target: '+237679285276' },
-          { label: '💬 Contacter sur WhatsApp', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
+          { label: '📋 Lancer un projet', actionType: 'quote' },
+          { label: '📞 Ligne d\'urgence : +237 6 79 28 52 76', actionType: 'call', target: '+237679285276' },
         ],
       };
     }
 
-    // 10. Garanties / Qualité / Normes
-    if (
-      q.includes('garantie') ||
-      q.includes('norme') ||
-      q.includes('qualite') ||
-      q.includes('qualité') ||
-      q.includes('assurance') ||
-      q.includes('decennale') ||
-      q.includes('décennale') ||
-      q.includes('securite') ||
-      q.includes('sécurité')
-    ) {
-      return {
-        text: "🛡️ **Nos Engagements & Certifications** :\n\n" +
-          "• **Garantie Décennale** sur tous nos ouvrages installés.\n" +
-          "• Conception conforme aux **Eurocodes 3 (Acier)** et **Eurocodes 2 (Béton)**.\n" +
-          "• Respect scrupuleux des normes de sécurité garde-corps **NF P01-012**.\n" +
-          "• Traçabilité complète des aciers nobles et contrôles de soudure certifiés.",
-        actionButtons: [
-          { label: '📋 Lancer un projet sécurisé', actionType: 'quote' },
-        ],
-      };
-    }
-
-    // Fallback response with helpful menu
+    // Fallback response with the 3 main subjects
     return {
-      text: "Je comprends votre demande ! Pour vous apporter une réponse sur-mesure :\n\n" +
-        "• Vous pouvez nous contacter directement au **+237 6 79 28 52 76**\n" +
-        "• Échanger instantanément par **WhatsApp** avec notre chef de projet\n" +
-        "• Ou soumettre votre besoin via notre formulaire de devis détaillé.",
+      text: "Je suis là pour vous aider ! Voici les 3 informations les plus demandées sur **CONMIX SARL** :\n\n" +
+        "1. 🛠️ **Nos 5 Services** : Étude de projet, Construction métallique, Menuiserie d'art, Génie civil, Formations.\n" +
+        "2. 💰 **Nos Prix** : 100% sur mesure, devis gratuit sous 24h-48h.\n" +
+        "3. 📍 **Notre Localisation** : Babenga, Région du Littoral, Cameroun.\n\n" +
+        "Sélectionnez un bouton ci-dessous ou posez-moi votre question directement !",
       actionButtons: [
-        { label: '📋 Remplir une demande de devis', actionType: 'quote' },
-        { label: '💬 Échanger sur WhatsApp', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
-        { label: '📞 Téléphoner (+237 6 79 28 52 76)', actionType: 'call', target: '+237679285276' },
+        { label: '🛠️ Les Services', actionType: 'link', target: '#services' },
+        { label: '💰 Les Prix & Devis', actionType: 'quote' },
+        { label: '📍 Localisation (Babenga)', actionType: 'link', target: '#contact' },
+        { label: '💬 WhatsApp Direct', actionType: 'whatsapp', target: 'https://wa.me/237679285276' },
       ],
     };
   };
@@ -363,7 +351,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
 
       setMessages((prev) => [...prev, botMessage]);
       setIsTyping(false);
-    }, 700);
+    }, 600);
   };
 
   const handleActionButton = (btn: NonNullable<Message['actionButtons']>[0]) => {
@@ -394,7 +382,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
         {!isOpen && (
           <div className="hidden sm:flex items-center space-x-2 mr-3 px-3.5 py-1.5 rounded-full bg-[#1A1D20]/95 border border-[#A71D2A]/40 text-xs font-space text-white shadow-2xl backdrop-blur-md animate-bounce">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>Besoin d'aide ? <strong>Discutez avec CONMIX</strong></span>
+            <span>Services, Prix, Localisation : <strong>Discutez ici</strong></span>
           </div>
         )}
 
@@ -420,7 +408,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
 
       {/* Expandable Chat Drawer Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[420px] h-[580px] max-h-[82vh] bg-[#0B0D0F] border border-white/15 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 backdrop-blur-xl">
+        <div className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[440px] h-[600px] max-h-[84vh] bg-[#0B0D0F] border border-white/15 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 backdrop-blur-xl">
           {/* Header */}
           <div className="p-4 bg-[#1A1D20] border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -440,7 +428,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
                   <Sparkles className="w-3.5 h-3.5 text-[#C82333]" />
                 </div>
                 <p className="text-[10px] font-space text-emerald-400 font-medium">
-                  En ligne • Réponse automatique 24/7
+                  En ligne • Services, Prix & Localisation 24/7
                 </p>
               </div>
             </div>
@@ -463,13 +451,38 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
             </div>
           </div>
 
-          {/* Quick suggestions pills */}
-          <div className="px-3 py-2 bg-[#141618] border-b border-white/5 overflow-x-auto scrollbar-none flex items-center space-x-2">
+          {/* Primary Quick Access Tabs (Services, Prix, Localisation) */}
+          <div className="p-2.5 bg-[#121416] border-b border-white/10 grid grid-cols-3 gap-1.5">
+            <button
+              onClick={() => handleSend('Quels sont vos 5 services ?')}
+              className="py-1.5 px-2 rounded-lg bg-[#1A1D20] hover:bg-[#A71D2A] border border-white/10 text-[11px] font-space font-semibold text-white/90 hover:text-white flex items-center justify-center space-x-1 transition-all"
+            >
+              <Wrench className="w-3.5 h-3.5 text-[#C82333]" />
+              <span>Services</span>
+            </button>
+            <button
+              onClick={() => handleSend('Quels sont vos prix et tarifs ?')}
+              className="py-1.5 px-2 rounded-lg bg-[#1A1D20] hover:bg-[#A71D2A] border border-white/10 text-[11px] font-space font-semibold text-white/90 hover:text-white flex items-center justify-center space-x-1 transition-all"
+            >
+              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Prix & Devis</span>
+            </button>
+            <button
+              onClick={() => handleSend('Où êtes-vous situés ? Localisation')}
+              className="py-1.5 px-2 rounded-lg bg-[#1A1D20] hover:bg-[#A71D2A] border border-white/10 text-[11px] font-space font-semibold text-white/90 hover:text-white flex items-center justify-center space-x-1 transition-all"
+            >
+              <MapPin className="w-3.5 h-3.5 text-amber-400" />
+              <span>Localisation</span>
+            </button>
+          </div>
+
+          {/* Secondary Quick suggestions pills */}
+          <div className="px-3 py-1.5 bg-[#141618] border-b border-white/5 overflow-x-auto scrollbar-none flex items-center space-x-2">
             {QUICK_PROMPTS.map((prompt, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(prompt)}
-                className="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1A1D20] hover:bg-[#A71D2A]/20 hover:border-[#A71D2A]/50 border border-white/10 text-[11px] font-space text-white/80 hover:text-white transition-all shrink-0"
+                className="whitespace-nowrap px-2.5 py-1 rounded-full bg-[#1A1D20] hover:bg-[#A71D2A]/20 hover:border-[#A71D2A]/50 border border-white/10 text-[10px] font-space text-white/80 hover:text-white transition-all shrink-0"
               >
                 {prompt}
               </button>
@@ -483,7 +496,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
                 key={msg.id}
                 className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
-                <div className="flex items-start space-x-2 max-w-[88%]">
+                <div className="flex items-start space-x-2 max-w-[90%]">
                   {msg.sender === 'bot' && (
                     <div className="w-7 h-7 rounded-lg bg-[#A71D2A]/20 border border-[#A71D2A]/40 flex items-center justify-center shrink-0 mt-1">
                       <Bot className="w-4 h-4 text-[#C82333]" />
@@ -572,7 +585,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onOpenQuoteModal }) => {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Posez votre question (devis, usines, délais...)"
+              placeholder="Posez votre question (services, prix, Babenga...)"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#1A1D20] border border-white/15 text-white placeholder-white/40 text-xs sm:text-sm font-outfit focus:outline-none focus:border-[#A71D2A] transition-colors"
