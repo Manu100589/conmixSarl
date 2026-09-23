@@ -60,12 +60,32 @@ export interface ChatResponsePayload {
   notice?: string;
 }
 
+import fs from 'node:fs';
+import path from 'node:path';
+
+function getApiKey(keyName: string): string | undefined {
+  if (process.env[keyName]) return process.env[keyName];
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      const match = content.match(new RegExp(`^${keyName}\\s*=\\s*(.*)$`, 'm'));
+      if (match && match[1]) {
+        return match[1].trim().replace(/^["']|["']$/g, '');
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return undefined;
+}
+
 /**
  * Traitement de la requête de chat avec Gemini, Groq ou fallback local
  */
 export async function handleChatRequest({ message, history = [] }: ChatRequestPayload): Promise<ChatResponsePayload> {
-  const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-  const groqApiKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
+  const geminiApiKey = getApiKey('GEMINI_API_KEY') || getApiKey('VITE_GEMINI_API_KEY');
+  const groqApiKey = getApiKey('GROQ_API_KEY') || getApiKey('VITE_GROQ_API_KEY');
 
   // 1. Essai avec l'API Google Gemini
   if (geminiApiKey && geminiApiKey.trim() !== '') {
@@ -87,7 +107,7 @@ export async function handleChatRequest({ message, history = [] }: ChatRequestPa
       contents.push({ role: 'user', parts: [{ text: message }] });
 
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey.trim()}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${geminiApiKey.trim()}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -98,7 +118,7 @@ export async function handleChatRequest({ message, history = [] }: ChatRequestPa
             contents,
             generationConfig: {
               temperature: 0.7,
-              maxOutputTokens: 800,
+              maxOutputTokens: 2048,
             },
           }),
         }
