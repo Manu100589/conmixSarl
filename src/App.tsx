@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+import { InterSectionTransition } from './components/motion/MotionSignatures';
 import { CustomCursor } from './components/CustomCursor';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -67,14 +68,23 @@ export const App: React.FC = () => {
         {/* 1. Hero Section */}
         <Hero onOpenQuoteModal={() => setQuoteModalOpen(true)} />
 
+        {/* Transition Parallaxe Inter-Section */}
+        <InterSectionTransition label="ACIER S355 & CHAUDRONNERIE" coords="04°05'N, 09°42'E — BABENGA" />
+
         {/* Concept Banner: Le Métal en Mouvement */}
         <MetalInMotion />
 
         {/* 2. Introduction Section */}
         <Introduction />
 
+        {/* Transition Parallaxe Inter-Section */}
+        <InterSectionTransition label="INGÉNIERIE & ÉTUDES BIM" coords="LITTORAL, CAMEROUN" />
+
         {/* 3. Nos Services / Notre Savoir-faire */}
         <Services onSelectService={(service) => setSelectedService(service)} />
+
+        {/* Transition Parallaxe Inter-Section */}
+        <InterSectionTransition label="CHANTIERS AGRO-INDUSTRIE & PAPETERIE" coords="DOUALA & CEMAC" />
 
         {/* 4. Nos Projets Réalisés (Usines p1, p2, p3) */}
         <RealizedProjects />
@@ -90,6 +100,9 @@ export const App: React.FC = () => {
 
         {/* 7. Chiffres Clés */}
         <KeyMetrics />
+
+        {/* Transition Parallaxe Inter-Section */}
+        <InterSectionTransition label="STANDARDS EUROCODES & AFNOR" coords="GARANTIE DÉCENNALE" />
 
         {/* 8. Engagements / Qualité */}
         <Commitments />

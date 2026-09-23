@@ -446,3 +446,234 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
     </div>
   );
 };
+
+/**
+ * 7. ParallaxLayer (Éléments & Arrière-plans Flottants Inter-Sections)
+ * - Déplace l'élément au scroll avec un facteur de vitesse `speed` (ex: 0.35 ou -0.35)
+ */
+interface ParallaxLayerProps {
+  children: React.ReactNode;
+  speed?: number;
+  className?: string;
+  triggerRef?: React.RefObject<HTMLElement | null>;
+}
+
+export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
+  children,
+  speed = 0.25,
+  className = '',
+  triggerRef,
+}) => {
+  const elRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+
+    const triggerEl = triggerRef?.current || el;
+    const distance = speed * 160;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { y: -distance / 2 },
+        {
+          y: distance / 2,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: triggerEl,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, [speed, triggerRef]);
+
+  return (
+    <div ref={elRef} className={`will-change-transform ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+/**
+ * 8. ParallaxMedia (Aperture d'images à défilement cinématographique)
+ * - Contraint l'image dans un wrapper overflow: hidden
+ * - Fait défiler l'image intérieure avec un léger zoom et un décalage yPercent (-12% -> +12%)
+ */
+interface ParallaxMediaProps {
+  src: string;
+  alt: string;
+  className?: string;
+  imgClassName?: string;
+  speed?: number;
+}
+
+export const ParallaxMedia: React.FC<ParallaxMediaProps> = ({
+  src,
+  alt,
+  className = '',
+  imgClassName = '',
+  speed = 12,
+}) => {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const img = imgRef.current;
+    if (!wrapper || !img) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        img,
+        {
+          yPercent: -speed,
+          scale: 1.15,
+        },
+        {
+          yPercent: speed,
+          scale: 1.05,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+    }, wrapper);
+
+    return () => ctx.revert();
+  }, [speed]);
+
+  return (
+    <div ref={wrapperRef} className={`relative overflow-hidden ${className}`}>
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        className={`w-full h-full object-cover will-change-transform ${imgClassName}`}
+      />
+    </div>
+  );
+};
+
+/**
+ * 9. ParallaxWatermark (Titres & Filigranes Monumentaux Inter-Sections)
+ * - Filigranes géants éditoriaux ultra-discrets (opacity: 0.02 - 0.04)
+ * - Glissent avec un scrub parallax fluide entre les sections
+ */
+interface ParallaxWatermarkProps {
+  text: string;
+  speed?: number;
+  className?: string;
+  align?: 'left' | 'right' | 'center';
+}
+
+export const ParallaxWatermark: React.FC<ParallaxWatermarkProps> = ({
+  text,
+  speed = 0.35,
+  className = '',
+  align = 'right',
+}) => {
+  const textRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { y: -70 * speed, opacity: 0.015 },
+        {
+          y: 70 * speed,
+          opacity: 0.04,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, [speed]);
+
+  return (
+    <div
+      ref={textRef}
+      aria-hidden="true"
+      className={`absolute pointer-events-none select-none z-0 overflow-hidden whitespace-nowrap font-syne font-black text-[13vw] sm:text-[15vw] tracking-tighter uppercase text-white/5 leading-none will-change-transform ${
+        align === 'right'
+          ? 'right-0 text-right'
+          : align === 'left'
+          ? 'left-0 text-left'
+          : 'left-1/2 -translate-x-1/2 text-center'
+      } ${className}`}
+    >
+      {text}
+    </div>
+  );
+};
+
+/**
+ * 10. InterSectionTransition (Diviseur Cinétique & Coordonnées Éditoriales)
+ * - Ligne fine de liaison avec micro-coordonnées architecturales et lueur mouvante
+ */
+export const InterSectionTransition: React.FC<{
+  label?: string;
+  coords?: string;
+}> = ({ label = 'CONSTRUCTION MÉTALLIQUE', coords = 'BABENGA — CAMEROUN' }) => {
+  const lineRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const line = lineRef.current;
+    if (!line) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        line,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: line,
+            start: 'top 92%',
+            once: true,
+          },
+        }
+      );
+    }, line);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div className="relative w-full py-4 overflow-hidden pointer-events-none select-none z-10">
+      <div
+        ref={lineRef}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[9px] sm:text-[10px] font-space tracking-[0.25em] uppercase text-[#9CA3AF]/40 origin-left"
+      >
+        <div className="flex items-center space-x-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C82333]/80 animate-pulse" />
+          <span>{label}</span>
+        </div>
+        <div className="h-[1px] flex-1 mx-6 bg-gradient-to-r from-white/10 via-[#C82333]/30 to-transparent" />
+        <span>{coords}</span>
+      </div>
+    </div>
+  );
+};

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, Layers, FileText, Building2, Wrench, HardHat, GraduationCap } from 'lucide-react';
-import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
+import { KineticTracking, Subtle3DAxis, ParallaxWatermark, ParallaxLayer } from './motion/MotionSignatures';
 
 export interface ServiceItem {
   id: string;
@@ -73,8 +73,13 @@ export const servicesData: ServiceItem[] = [
 export const Services: React.FC<ServicesProps> = ({ onSelectService }) => {
   return (
     <section id="services" className="relative py-24 sm:py-32 bg-[#1A1D20] text-white overflow-hidden border-b border-white/10">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#A71D2A]/10 blur-[150px] pointer-events-none rounded-full" />
+      <ParallaxLayer speed={-0.3} className="absolute top-0 right-0 pointer-events-none">
+        <div className="w-[500px] h-[500px] bg-[#A71D2A]/10 blur-[150px] rounded-full" />
+      </ParallaxLayer>
       <div className="absolute inset-0 bg-metal-grid opacity-10 pointer-events-none" />
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="SAVOIR-FAIRE" speed={0.4} align="left" className="top-16 -left-12" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">

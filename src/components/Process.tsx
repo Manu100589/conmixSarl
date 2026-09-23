@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { MessageSquare, Compass, Factory, CheckCircle2, Wrench, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
+import { KineticTracking, Subtle3DAxis, ParallaxWatermark } from './motion/MotionSignatures';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,6 +80,9 @@ export const Process: React.FC = () => {
     <section id="process" ref={sectionRef} className="relative py-24 sm:py-32 bg-[#1A1D20] text-white overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-metal-grid opacity-10 pointer-events-none" />
       <div className="absolute top-1/3 left-0 w-80 h-80 bg-[#A71D2A]/10 blur-[150px] pointer-events-none rounded-full" />
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="MÉTHODOLOGIE" speed={0.4} align="right" className="top-10 -right-8" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20">

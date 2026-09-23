@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ShieldCheck, Ruler, Award, CheckCircle } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { KineticTracking, WordDisplacement, Subtle3DAxis } from './motion/MotionSignatures';
+import { KineticTracking, WordDisplacement, Subtle3DAxis, ParallaxWatermark } from './motion/MotionSignatures';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,6 +59,9 @@ export const Introduction: React.FC = () => {
       className="relative py-24 sm:py-32 bg-[#0B0D0F] text-[#F4F4F0] overflow-hidden border-b border-white/10"
     >
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="INGÉNIERIE" speed={0.4} align="right" className="top-12 -right-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex items-center space-x-3 mb-8">

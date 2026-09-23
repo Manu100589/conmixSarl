@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Maximize2, Sparkles, Filter, X } from 'lucide-react';
-import { KineticTracking, Subtle3DAxis } from './motion/MotionSignatures';
+import { KineticTracking, Subtle3DAxis, ParallaxWatermark } from './motion/MotionSignatures';
 
 interface Project {
   id: string;
@@ -111,6 +111,9 @@ export const Showcase: React.FC = () => {
     <section id="showcase" className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#A71D2A]/10 blur-[160px] pointer-events-none rounded-full" />
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="CHAUDRONNERIE" speed={0.35} align="left" className="top-14 -left-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, PhoneCall, Mail, MapPin, MessageSquare, Paperclip, CheckCircle, Sparkles } from 'lucide-react';
-import { KineticTracking } from './motion/MotionSignatures';
+import { KineticTracking, ParallaxWatermark, ParallaxLayer } from './motion/MotionSignatures';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -44,7 +44,12 @@ export const Contact: React.FC = () => {
   return (
     <section id="contact" className="relative py-24 sm:py-32 bg-[#1A1D20] text-white border-b border-white/10 overflow-hidden">
       <div className="absolute inset-0 bg-metal-grid opacity-10 pointer-events-none" />
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#A71D2A]/10 blur-[180px] pointer-events-none rounded-full" />
+      <ParallaxLayer speed={-0.3} className="absolute top-1/4 right-0 pointer-events-none">
+        <div className="w-96 h-96 bg-[#A71D2A]/10 blur-[180px] rounded-full" />
+      </ParallaxLayer>
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="BABENGA" speed={0.4} align="right" className="top-10 -right-6" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">

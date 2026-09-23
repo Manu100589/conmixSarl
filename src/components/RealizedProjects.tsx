@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight, X, Layers, Image as ImageIcon } from 'lucide-react';
-import { SplitMaskReveal, MaskLine, Subtle3DAxis } from './motion/MotionSignatures';
+import { SplitMaskReveal, MaskLine, Subtle3DAxis, ParallaxWatermark, ParallaxLayer } from './motion/MotionSignatures';
 
 export interface RealizedProject {
   id: string;
@@ -147,7 +147,12 @@ export const RealizedProjects: React.FC = () => {
   return (
     <section id="projets-realises" className="relative py-24 sm:py-32 bg-[#0B0D0F] text-white overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-metal-grid opacity-15 pointer-events-none" />
-      <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-[#A71D2A]/10 blur-[180px] pointer-events-none rounded-full" />
+      <ParallaxLayer speed={-0.35} className="absolute top-1/4 right-0 pointer-events-none">
+        <div className="w-[600px] h-[600px] bg-[#A71D2A]/10 blur-[180px] rounded-full" />
+      </ParallaxLayer>
+
+      {/* Filigrane Parallaxe Monumental Inter-Section */}
+      <ParallaxWatermark text="RÉALISATIONS" speed={0.4} align="right" className="top-12 -right-16" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
